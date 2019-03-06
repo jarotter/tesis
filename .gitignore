@@ -117,3 +117,6 @@ dmypy.json
 
 # Papers
 refs/
+
+# Bitácora
+log/
