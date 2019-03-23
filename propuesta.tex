@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+
+% -------- Español ---------
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+% --------------------------
+
+% ------- No numerar -------
+\makeatletter
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section\else
+  \csname the#1\endcsname\quad
+  \fi}
+\makeatother
+% --------------------------
+
+% ------ Listas formato ----
+\usepackage{enumitem}
+% --------------------------
+
+\begin{document}
+\title{Propuesta de tesis: Inferencia bayesiana a gran escala con \textit{Stein Variational Gradient Descent}}
+\author{Jorge Rotter}
+\maketitle
+
+\section{Motivación}
+
+\section{Propuesta de contenidos}
+\begin{enumerate}
+	\item Motivación
+	\begin{enumerate}[label=1.\arabic*]
+		\item El estado actual del aprendizaje de máquina:  grandes volúmenes, \textit{deep learning} y \textit{probabilistic programming} 
+		\item Inferencia bayesiana a gran escala
+	\end{enumerate}
+	\item Inferencia variacional
+	\begin{enumerate}[label=2.\arabic*]
+		\item La divergencia de Kullback-Leibler
+		\item Inferencia variacional
+		\item Inferencia variacional con diferenciación automática (ADVI)
+	\end{enumerate}
+	\item Reproducing Kernel Hilbert Spaces
+	\begin{enumerate}[label=3.\arabic*]
+		\item Equivalencia entre definiciones (incluyendo teorema de Riesz y de Moore-Aronszajn)
+		\item Kérneles vía \textit{random features}
+	\end{enumerate}
+	\item Stein Variational Gradient descent
+	\begin{enumerate}[label=4.\arabic*]
+		\item La discrepancia de Stein kernelizada
+		\item Construcción del algoritmo SVGD
+	\end{enumerate}
+	\item Análisis de convergencia
+	\begin{enumerate}[label=5.\arabic*]
+		\item Análisis asintótico 
+		\begin{enumerate}[label=5.1.\arabic*]
+			\item Medidas empíricas
+			\item Convergencia (débil) en el número de partículas
+			\item Convergencia (débil) en el tiempo
+			\item Interpretación geométrica y transporte óptimo 
+		\end{enumerate}
+		\item Análisis en partículas finitas
+		\begin{enumerate}[label=5.2.\arabic*]
+			\item Punto fijo de SVGD
+			\item SVGD con \textit{feature maps}
+			\item SVGD con \textit{features} aleatorias
+		\end{enumerate}
+
+	\end{enumerate}
+	\item Implementación y pruebas
+	\item Conclusiones
+\end{enumerate}
+
+\section{Referencias}
+
+
+\end{document}
