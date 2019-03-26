@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+
+% -------- Español ---------
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+% --------------------------
+
+% ------- No numerar -------
+\makeatletter
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section\else
+  \csname the#1\endcsname\quad
+  \fi}
+\makeatother
+% --------------------------
+
+% ------ Listas formato ----
+\usepackage{enumitem}
+% --------------------------
+
+\begin{document}
+\title{Propuesta de tesis: Inferencia bayesiana a gran escala con \textit{Stein
+Variational Gradient Descent}}
+\author{Jorge Rotter}
+\date{}
+\maketitle
+
+\section{Resumen}
+
+Recientemente, la atención popular en el aprendizaje de máquina se ha enfocado
+en el \textit{deep learning}, (redes neuronales profundas que se han probado
+exitosas en reconocimiento de imágenes y análisis de texto) y en algoritmos
+para grandes volúmenes de datos. Sin embargo, casi todos los algoritmos de
+aprendizaje modernos utilizan técnicas de optimización  que dificultan
+cuantificar la incertidumbre. Encontrar equivalentes bayesianos es difícil,
+pues incluso los modelos más clásicos son difíciles de escalar a la complejidad
+y el volumen de los datos que han dado éxito a su contraparte frecuentista. 
+En este trabajo se explorará un algoritmo de inferencia variacional propuesto
+por Liu y Wang \cite{svgd} \textit{Stein Variational Gradient Descent} (SVGD).
+Este algoritmo combina la flexibilidad no-paramétrica de los métodos MCMC con
+la facilidad de cómputo de los métodos variacionales. \\
+
+SVGD plantea aproximar la posterior con partículas que se actualizan
+iterativamente para reducir la divergencia de Kullback-Leibler desde la medida
+empírica de las partículas. Para facilitar el cómputo, elige como espacio para
+la optimización la bola unitaria de un \textit{reproducing kernel hilbert
+space} (RKHS) y utiliza un resultado que liga la derivada de la divergencia de
+Kullback-Leibler con la discrepancia de Stein, que surge en el método de Stein
+utilizado para acotar aproximaciones de momentos. Mostraremos que el algoritmo
+puede interpretarse como una forma de descenso en gradiente funcional en este
+RKHS, pero también como un flujo de gradiente en un espacio de distribuciones
+(cuando las partículas se van a infinito) y como un método para que la
+esperanza de todas las funciones en cierto conjunto, relativo a la medida
+empírica de las partículas, coincida con la de relativa a la posterior. Esta
+última interpretación además pone en perspectiva el efecto que la elección del
+kernel tiene sobre la convergencia del algoritmo.\\
+
+En las últimas secciones se implementará SVGD para compararlo con MCMC y con el
+algoritmo usual para entrenar redes neuronales, \textit{backprogation}.
+
+
+\section{Propuesta de contenidos}
+\begin{enumerate}
+	\item Motivación
+	\begin{enumerate}[label=1.\arabic*]
+		\item El estado actual del aprendizaje de máquina:  grandes volúmenes,
+			\textit{deep learning} y \textit{probabilistic programming}
+		\item Inferencia bayesiana a gran escala
+	\end{enumerate}
+	\item Inferencia variacional
+	\begin{enumerate}[label=2.\arabic*]
+		\item La divergencia de Kullback-Leibler
+		\item Inferencia variacional \cite{vi}
+\item Inferencia variacional con diferenciación automática (ADVI)
+\cite{Kucukelbir2016}
+	\end{enumerate}
+	\item Reproducing Kernel Hilbert Spaces \cite{Berlinet2009}
+	\begin{enumerate}[label=3.\arabic*]
+\item Equivalencia entre definiciones %(incluyendo teorema de Riesz y de
+Moore-Aronszajn)
+		\item Kérneles vía \textit{random features} \cite{Rahimi}
+	\end{enumerate}
+	\item Stein Variational Gradient descent
+	\begin{enumerate}[label=4.\arabic*]
+\item La discrepancia de Stein kernelizada \cite{kernelized-stein-discrepancy,
+measuring-quality}
+		\item Construcción del algoritmo SVGD \cite{svgd}
+	\end{enumerate}
+	\item Análisis de convergencia 
+	\begin{enumerate}[label=5.\arabic*]
+		\item Análisis asintótico \cite{svgd-gradient-flow, Trillos2017}
+		\begin{enumerate}[label=5.1.\arabic*]
+			\item Medidas empíricas
+			\item Convergencia (débil) en el número de partículas
+			\item Convergencia (débil) en el tiempo
+			\item Interpretación geométrica y transporte óptimo 
+		\end{enumerate}
+		\item Análisis en partículas finitas \cite{svgd-moment-matching}
+		\begin{enumerate}[label=5.2.\arabic*]
+			\item Punto fijo de SVGD
+			\item SVGD con \textit{feature maps}
+			\item SVGD con \textit{features} aleatorias
+		\end{enumerate}
+
+	\end{enumerate}
+	\item Implementación y pruebas
+	\item Conclusiones
+\end{enumerate}
+
+\bibliographystyle{unsrt}
+\bibliography{referencias}
+
+
+\end{document}

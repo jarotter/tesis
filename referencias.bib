@@ -1,0 +1,141 @@
+@article{kernelized-stein-discrepancy,
+abstract = {We derive a new discrepancy statistic for measuring differences between two probability distributions based on combining Stein's identity with the reproducing kernel Hilbert space theory. We apply our result to test how well a probabilistic model fits a set of observations, and derive a new class of powerful goodness-of-fit tests that are widely applicable for complex and high dimensional distributions, even for those with computationally intractable normalization constants. Both theoretical and empirical properties of our methods are studied thoroughly.},
+archivePrefix = {arXiv},
+arxivId = {1602.03253},
+author = {Liu, Qiang and Lee, Jason D. and Jordan, Michael I.},
+eprint = {1602.03253},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/kernelized-stein-discrepancy.pdf:pdf},
+number = {1},
+title = {{A Kernelized Stein Discrepancy for Goodness-of-fit Tests and Model Evaluation}},
+url = {http://arxiv.org/abs/1602.03253},
+year = {2016}
+}
+
+@article{svgd,
+abstract = {We propose a general purpose variational inference algorithm that forms a natural counterpart of gradient descent for optimization. Our method iteratively transports a set of particles to match the target distribution, by applying a form of functional gradient descent that minimizes the KL divergence. Empirical studies are performed on various real world models and datasets, on which our method is competitive with existing state-of-the-art methods. The derivation of our method is based on a new theoretical result that connects the derivative of KL divergence under smooth transforms with Stein's identity and a recently proposed kernelized Stein discrepancy, which is of independent interest.},
+archivePrefix = {arXiv},
+arxivId = {1608.04471},
+author = {Liu, Qiang and Wang, Dilin},
+eprint = {1608.04471},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/svgd.pdf:pdf},
+issn = {10495258},
+pages = {4--7},
+pmid = {18792489},
+title = {{Stein Variational Gradient Descent: A General Purpose Bayesian Inference Algorithm}},
+url = {http://arxiv.org/abs/1608.04471},
+year = {2016}
+}
+
+@article{svgd-gradient-flow,
+abstract = {Stein variational gradient descent (SVGD) is a deterministic sampling algorithm that iteratively transports a set of particles to approximate given distributions, based on a gradient-based update that guarantees to optimally decrease the KL divergence within a function space. This paper develops the first theoretical analysis on SVGD. We establish that the empirical measures of the SVGD samples weakly converge to the target distribution, and show that the asymptotic behavior of SVGD is characterized by a nonlinear Fokker-Planck equation known as Vlasov equation in physics. We develop a geometric perspective that views SVGD as a gradient flow of the KL divergence functional under a new metric structure on the space of distributions induced by Stein operator.},
+author = {Liu, Qiang},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/svgd-gradient-flow.pdf:pdf},
+number = {Nips},
+title = {{Stein variational gradient descent as gradient flow}},
+url = {http://papers.nips.cc/paper/6904-stein-variational-gradient-descent-as-gradient-flow},
+year = {2017}
+}
+
+@article{svgd-moment-matching,
+abstract = {Stein variational gradient descent (SVGD) is a non-parametric inference algorithm that evolves a set of particles to fit a given distribution of interest. We analyze the non-asymptotic properties of SVGD, showing that there exists a set of functions, which we call the Stein matching set, whose expectations are exactly estimated by any set of particles that satisfies the fixed point equation of SVGD. This set is the image of Stein operator applied on the feature maps of the positive definite kernel used in SVGD. Our results provide a theoretical framework for analyzing the properties of SVGD with different kernels, shedding insight into optimal kernel choice. In particular, we show that SVGD with linear kernels yields exact estimation of means and variances on Gaussian distributions, while random Fourier features enable probabilistic bounds for distributional approximation. Our results offer a refreshing view of the classical inference problem as fitting Stein's identity or solving the Stein equation, which may motivate more efficient algorithms.},
+archivePrefix = {arXiv},
+arxivId = {1810.11693},
+author = {Liu, Qiang and Wang, Dilin},
+doi = {arXiv:1810.11693v1},
+eprint = {1810.11693},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/svgd-moment-matching.pdf:pdf},
+issn = {10495258},
+pmid = {18792489},
+title = {{Stein Variational Gradient Descent as Moment Matching}},
+url = {http://arxiv.org/abs/1810.11693},
+year = {2018}
+}
+
+@article{measuring-quality,
+abstract = {Approximate Markov chain Monte Carlo (MCMC) offers the promise of more rapid sampling at the cost of more biased inference. Since standard MCMC diagnostics fail to detect these biases, researchers have developed computable Stein discrepancy measures that provably determine the convergence of a sample to its target distribution. This approach was recently combined with the theory of reproducing kernels to define a closed-form kernel Stein discrepancy (KSD) computable by summing kernel evaluations across pairs of sample points. We develop a theory of weak convergence for KSDs based on Stein's method, demonstrate that commonly used KSDs fail to detect non-convergence even for Gaussian targets, and show that kernels with slowly decaying tails provably determine convergence for a large class of target distributions. The resulting convergence-determining KSDs are suitable for comparing biased, exact, and deterministic sample sequences and simpler to compute and parallelize than alternative Stein discrepancies. We use our tools to compare biased samplers, select sampler hyperparameters, and improve upon existing KSD approaches to one-sample hypothesis testing and sample quality improvement.},
+archivePrefix = {arXiv},
+arxivId = {1703.01717},
+author = {Gorham, Jackson and Mackey, Lester},
+doi = {10.1016/j.bbr.2008.10.038},
+eprint = {1703.01717},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/deeper/measuring-sample-quality.pdf:pdf},
+isbn = {0022-0515},
+issn = {1872-7549},
+pmid = {19041347},
+title = {{Measuring Sample Quality with Kernels}},
+url = {http://arxiv.org/abs/1703.01717},
+year = {2017}
+}
+
+@article{vi,
+abstract = {One of the core problems of modern statistics is to approximate difficult-to-compute probability densities. This problem is especially important in Bayesian statistics, which frames all inference about unknown quantities as a calculation involving the posterior density. In this paper, we review variational inference (VI), a method from machine learning that approximates probability densities through optimization. VI has been used in many applications and tends to be faster than classical methods, such as Markov chain Monte Carlo sampling. The idea behind VI is to first posit a family of densities and then to find the member of that family which is close to the target. Closeness is measured by Kullback-Leibler divergence. We review the ideas behind mean-field variational inference, discuss the special case of VI applied to exponential family models, present a full example with a Bayesian mixture of Gaussians, and derive a variant that uses stochastic optimization to scale up to massive data. We discuss modern research in VI and highlight important open problems. VI is powerful, but it is not yet well understood. Our hope in writing this paper is to catalyze statistical research on this class of algorithms.},
+archivePrefix = {arXiv},
+arxivId = {arXiv:1601.00670v9},
+author = {Blei, David M. and Kucukelbir, Alp and McAuliffe, Jon D.},
+doi = {10.1080/01621459.2017.1285773},
+eprint = {arXiv:1601.00670v9},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/deeper/inferencia-variacional.pdf:pdf},
+isbn = {1601.00670},
+issn = {1537274X},
+journal = {Journal of the American Statistical Association},
+keywords = {Algorithms,Computationally intensive methods,Statistical computing},
+number = {518},
+pages = {859--877},
+pmid = {303902},
+title = {{Variational Inference: A Review for Statisticians}},
+volume = {112},
+year = {2017}
+}
+
+@article{Rahimi,
+author = {Rahimi, Ali and Recht, Ben},
+doi = {10.1007/s12204-009-0467-7},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/deeper/random-features-kernel.pdf:pdf},
+isbn = {160560352X},
+issn = {10071172},
+pmid = {4519940},
+title = {{Random Features for Large-Scale Kernel Machines}}
+}
+
+@article{Kucukelbir2016,
+abstract = {Probabilistic modeling is iterative. A scientist posits a simple model, fits it to her data, refines it according to her analysis, and repeats. However, fitting complex models to large data is a bottleneck in this process. Deriving algorithms for new models can be both mathematically and computationally challenging, which makes it difficult to efficiently cycle through the steps. To this end, we develop automatic differentiation variational inference (ADVI). Using our method, the scientist only provides a probabilistic model and a dataset, nothing else. ADVI automatically derives an efficient variational inference algorithm, freeing the scientist to refine and explore many models. ADVI supports a broad class of models-no conjugacy assumptions are required. We study ADVI across ten different models and apply it to a dataset with millions of observations. ADVI is integrated into Stan, a probabilistic programming system; it is available for immediate use.},
+archivePrefix = {arXiv},
+arxivId = {1603.00788},
+author = {Kucukelbir, Alp and Tran, Dustin and Ranganath, Rajesh and Gelman, Andrew and Blei, David M.},
+doi = {10.3847/0004-637X/819/1/50},
+eprint = {1603.00788},
+file = {:Users/jarotter/Documents/ITAM/8 - Oto{\~{n}}o 2018/proyecto{\_}simulacion/docs/1603.00788.pdf:pdf},
+isbn = {1603.00788},
+issn = {15337928},
+pages = {1--38},
+title = {{Automatic Differentiation Variational Inference}},
+url = {http://arxiv.org/abs/1603.00788},
+year = {2016}
+}
+
+@book{Berlinet2009,
+author = {Berlinet, Alain and Thomas-Agnan, Christine},
+doi = {10.1142/9789812835635_0014},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/rkhs/Alain Berlinet, Christine Thomas-Agnan - Reproducing Kernel Hilbert Spaces in Probability and Statistics (2004, Springer).pdf:pdf},
+isbn = {9781461347927},
+pages = {153--162},
+publisher = {Springer Science + Business Media},
+title = {{Reproducing Kernels in Probability and Statistics}},
+year = {2009}
+}
+
+
+@article{Trillos2017,
+abstract = {The Bayesian update can be viewed as a variational problem by characterizing the posterior as the minimizer of a functional. The variational viewpoint is far from new and is at the heart of popular methods for posterior approximation. However, some of its consequences seem largely unexplored. We focus on the following one: defining the posterior as the minimizer of a functional gives a natural path towards the posterior by moving in the direction of steepest descent of the functional. This idea is made precise through the theory of gradient flows, allowing to bring new tools to the study of Bayesian models and algorithms. Since the posterior may be characterized as the minimizer of different functionals, several variational formulations may be considered. We study three of them and their three associated gradient flows. We show that, in all cases, the rate of convergence of the flows to the posterior can be bounded by the geodesic convexity of the functional to be minimized. Each gradient flow naturally suggests a nonlinear diffusion with the posterior as invariant distribution. These diffusions may be discretized to build proposals for Markov chain Monte Carlo (MCMC) algorithms. By construction, the diffusions are guaranteed to satisfy a certain optimality condition, and rates of convergence are given by the convexity of the functionals. We use this observation to propose a criterion for the choice of metric in Riemannian MCMC methods.},
+archivePrefix = {arXiv},
+arxivId = {1705.07382},
+author = {Trillos, Nicolas Garcia and Sanz-Alonso, Daniel},
+eprint = {1705.07382},
+file = {:Users/jarotter/Documents/ITAM/tesis/refs/povi/bayesian-gradient-flow.pdf:pdf},
+keywords = {convexity,gradient flows,riemannian mcmc,wasserstein space},
+number = {0},
+pages = {1--30},
+title = {{The Bayesian update: variational formulations and gradient flows}},
+url = {http://arxiv.org/abs/1705.07382},
+year = {2017}
+}
