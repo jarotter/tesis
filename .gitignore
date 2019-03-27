@@ -1,3 +1,6 @@
+# Output de LaTeX
+tex/*.pdf
+
 # Referencias
 docs/*
 
