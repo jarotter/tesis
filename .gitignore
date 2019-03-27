@@ -1,5 +1,6 @@
-# Output de LaTeX
+# texpad
 tex/*.pdf
+tex/.texpadtmp/*
 
 # Referencias
 docs/*
