@@ -2,10 +2,17 @@
 \begin{document}
 
 \chapter*{Inferencia variacional}
-A diferencia de los métodos MCMC, que se basan en muestreo,  la inferencia
+A diferencia de los métodos MCMC, que se basan en muestreo, la inferencia
 variacional plantea el problema de aproximar la posterior como uno de
-optimización. Los métodos variacionales surgieron en los años noventa en la
-física estadística y posteriormente en modelos gráficos \cite{advances-vi}
-\biblio{}
+optimización. A saber,
+
+\begin{equation}
+q^* = \argmin _{q \in \mathcal{Q}} D_{KL}(q\ ||\ p)
+	\label{eqn:vi}
+\end{equation}
+
+\section*{La divergencia de Kullback-Leibler}
+
+
 
 \end{document}
