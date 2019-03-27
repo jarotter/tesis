@@ -87,7 +87,7 @@ volume = {112},
 year = {2017}
 }
 
-@article{Rahimi,
+@article{random-features-kernel,
 author = {Rahimi, Ali and Recht, Ben},
 doi = {10.1007/s12204-009-0467-7},
 file = {:Users/jarotter/Documents/ITAM/tesis/refs/svgd/deeper/random-features-kernel.pdf:pdf},
@@ -97,7 +97,7 @@ pmid = {4519940},
 title = {{Random Features for Large-Scale Kernel Machines}}
 }
 
-@article{Kucukelbir2016,
+@article{advi,
 abstract = {Probabilistic modeling is iterative. A scientist posits a simple model, fits it to her data, refines it according to her analysis, and repeats. However, fitting complex models to large data is a bottleneck in this process. Deriving algorithms for new models can be both mathematically and computationally challenging, which makes it difficult to efficiently cycle through the steps. To this end, we develop automatic differentiation variational inference (ADVI). Using our method, the scientist only provides a probabilistic model and a dataset, nothing else. ADVI automatically derives an efficient variational inference algorithm, freeing the scientist to refine and explore many models. ADVI supports a broad class of models-no conjugacy assumptions are required. We study ADVI across ten different models and apply it to a dataset with millions of observations. ADVI is integrated into Stan, a probabilistic programming system; it is available for immediate use.},
 archivePrefix = {arXiv},
 arxivId = {1603.00788},
@@ -113,7 +113,7 @@ url = {http://arxiv.org/abs/1603.00788},
 year = {2016}
 }
 
-@book{Berlinet2009,
+@book{rkhs-book,
 author = {Berlinet, Alain and Thomas-Agnan, Christine},
 doi = {10.1142/9789812835635_0014},
 file = {:Users/jarotter/Documents/ITAM/tesis/refs/rkhs/Alain Berlinet, Christine Thomas-Agnan - Reproducing Kernel Hilbert Spaces in Probability and Statistics (2004, Springer).pdf:pdf},
@@ -125,7 +125,7 @@ year = {2009}
 }
 
 
-@article{Trillos2017,
+@article{bayesian-gradient-flow,
 abstract = {The Bayesian update can be viewed as a variational problem by characterizing the posterior as the minimizer of a functional. The variational viewpoint is far from new and is at the heart of popular methods for posterior approximation. However, some of its consequences seem largely unexplored. We focus on the following one: defining the posterior as the minimizer of a functional gives a natural path towards the posterior by moving in the direction of steepest descent of the functional. This idea is made precise through the theory of gradient flows, allowing to bring new tools to the study of Bayesian models and algorithms. Since the posterior may be characterized as the minimizer of different functionals, several variational formulations may be considered. We study three of them and their three associated gradient flows. We show that, in all cases, the rate of convergence of the flows to the posterior can be bounded by the geodesic convexity of the functional to be minimized. Each gradient flow naturally suggests a nonlinear diffusion with the posterior as invariant distribution. These diffusions may be discretized to build proposals for Markov chain Monte Carlo (MCMC) algorithms. By construction, the diffusions are guaranteed to satisfy a certain optimality condition, and rates of convergence are given by the convexity of the functionals. We use this observation to propose a criterion for the choice of metric in Riemannian MCMC methods.},
 archivePrefix = {arXiv},
 arxivId = {1705.07382},
@@ -139,3 +139,22 @@ title = {{The Bayesian update: variational formulations and gradient flows}},
 url = {http://arxiv.org/abs/1705.07382},
 year = {2017}
 }
+
+@article{advances-vi,
+abstract = {Many modern unsupervised or semi-supervised machine learning algorithms rely on Bayesian probabilistic models. These models are usually intractable and thus require approximate inference. Variational inference (VI) lets us approximate a high-dimensional Bayesian posterior with a simpler variational distribution by solving an optimization problem. This approach has been successfully used in various models and large-scale applications. In this review, we give an overview of recent trends in variational inference. We first introduce standard mean field variational inference, then review recent advances focusing on the following aspects: (a) scalable VI, which includes stochastic approximations, (b) generic VI, which extends the applicability of VI to a large class of otherwise intractable models, such as non-conjugate models, (c) accurate VI, which includes variational models beyond the mean field approximation or with atypical divergences, and (d) amortized VI, which implements the inference over local latent variables with inference networks. Finally, we provide a summary of promising future research directions.},
+archivePrefix = {arXiv},
+arxivId = {1711.05597},
+author = {Zhang, Cheng and Butepage, Judith and Kjellstrom, Hedvig and Mandt, Stephan},
+doi = {10.1109/TPAMI.2018.2889774},
+eprint = {1711.05597},
+file = {:Users/jarotter/Documents/ITAM/tesis/docs/vi/advances-variational-inference.pdf:pdf},
+isbn = {03051838},
+issn = {19393539},
+journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+keywords = {Approximate Bayesian Inference,Bayes methods,Computational modeling,Hidden Markov models,Inference Networks,Market research,Optimization,Probabilistic logic,Reparameterization Gradients,Scalable Inference,Stochastic processes,Structured Variational Approximations,Variational Inference},
+pages = {1--23},
+pmid = {30596568},
+title = {{Advances in Variational Inference}},
+year = {2018}
+}
+

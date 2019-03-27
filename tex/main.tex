@@ -1,8 +1,25 @@
 \documentclass[11pt]{book}
+
+% --- para capítulos ----
 \usepackage{subfiles}
 \usepackage{tesis}
 
+% ---- para referencias ------
+\def\biblio{\bibliographystyle{unsrt}\bibliography{referencias}}
+
 \begin{document}
+
+% para referencias
+\def\biblio{}
+
+
+% ----- CUERPO ------
 \subfile{chapters/1-motivacion}
+\subfile{chapters/2-vi}
+
+
+% ---- REFERENCIAS ----
+\bibliographystyle{unsrt} 
+\bibliography{referencias}
 	
 \end{document}
