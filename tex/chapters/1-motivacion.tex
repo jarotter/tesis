@@ -1,28 +1,35 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\chapter*{Motivación}
-La estadística bayesiana interpreta la probabilidad no como un límite de frecuencias relativas en repeticiones independientes de un experimento, sino como la cuantificación de la incertidumbre personal. Así, es posible hablar de situaciones como \textquote{la probabilidad de que los demócratas ganen la elección en 2020} aunque sea imposible repetirlo. En el contexto de un modelo estadístico en el que un fenómeno $X$ tiene una medida de probabilidad parametrizada por $\theta \in \Theta$, esta diferencia epistemológica se traduce a la asignación de una medida de probabilidad $p(\theta)$. La inferencia bayesiana se interpreta entonces como actualizar las creencias acerca de $\theta$ usando el teorema de Bayes
+\chapter{Introducción}
+La estadística bayesiana interpreta la probabilidad no como un límite de frecuencias relativas en repeticiones independientes de un experimento, sino como la cuantificación de la incertidumbre personal. Así, es posible hablar de situaciones como \textquote{la probabilidad de que los demócratas ganen la elección en 2020} aunque sea imposible repetirlo. En el contexto de un modelo estadístico en el que un fenómeno $X$ tiene una medida de probabilidad parametrizada por $\theta \in \Theta$, esta diferencia epistemológica decanta en la asignación de una medida de probabilidad $p(\theta)$. La inferencia bayesiana se interpreta entonces como actualizar las creencias acerca de $\theta$ usando el teorema de Bayes
 
 \begin{equation}
 	p(\theta | x) = \frac{p(x|\theta)p(\theta)}{p(x)}
 	\label{eqn:bayes-thm}	
 \end{equation}
 
-Al término del lado izquierdo se le llama \textit{probabilidad posterior}, y refleja el cambio en nuestra incertidumbre tras observar los datos $x$. El marco de referencia bayesiano permite... {\color{red}HABLAR DE GELMAN PHILOSOPHY AND PRACTICE.}
+Al término del lado izquierdo se le llama \textit{probabilidad posterior}, y refleja el cambio en nuestra incertidumbre tras observar los datos $x$. Como extensión, el marco de referencia bayesiano permite hacer revisión de modelos de manera sencilla. Simulando de la \textit{posterior predictiva} 
 
-Sin embargo, el denominador en \eqref{eqn:bayes-thm} es el cuello de botella computacional de la inferencia bayesiana. En la práctica se utilizan métodos para muestrear de $p(\theta |x)$ sin conocer su forma explícita. Los \textit{métodos de Monte Carlo con cadenas de Markov} (MCMC por sus siglas en inglés) construyen una cadena de Markov ergódica cuya distribución estacionaria es $p(\theta | x)$, de manera que desde cualquier punto inicial pueda obtenerse una cadena que a la larga dé muestras de la posterior \cite{robert-book}. Estos algoritmos facilitaron el uso de modelos bayesianos, pero en modelos complicados la convergencia es difícil y no escalan al tamaño masivo de los conjuntos de datos modernos.
+\begin{equation*}
+	p(x^*) = \int_\Theta p(x^*|\theta)p(\theta | x) d\theta	
+\end{equation*}
+ 
+ es posible comparar si el modelo propuesto coincide con los datos observados. Para Gelman y otros autores \cite{gelman-philosphy} este proceso es el meollo del análisis bayesiano. Sin ahondar más en esta discusión, la inferencia bayesiana es al menos una manera sistemática de cuantificar la incertidumbre y de dar resultados más sencillos de interpretar (por ejemplo, los intervalos creíbles sí son probabilidades, a diferencia de los intervalos de confianza).
 
-Para mejorar la convergencia de MCMC, existen algoritmos que exploran $\Theta$ de manera más eficiente usando dinámica hamiltoniana \cite{betancourt-hmc}, pero siguen sin ser suficientemente rápidos para usarse en grandes volúmenes.  
-Trabajo reciente de Broderick y Campbell \cite{coresets, coresets-greedy} propone métodos para construir \textit{coresets}, submuestras ponderadas que aproximan la verosimilitud de la totalidad de los datos, y efectivamente reducen el tamaño de muestra. Esta idea es perfectamente compatible con MCMC y con la clase de algoritmos variacionaleUna tercera escuela plantea expresar el problema de inferencia bayesiana como uno de optimización; pues los algoritmos frecuentistas se benefician del descenso en gradiente estocásticol que utiliza muestras pequeñas para estimar el gradiente \cite{goodfellow} de la función de pérdida. Como se verá con detenimiento en la siguiente sección, una formulación natural es aproximar la posterior $p$ con la distribución $q^*$ que minimice la divergencia de Kullback-Leibler de $q$ a $p$ en un conjunto $\mathcal{Q}$. 
+Sin embargo, el denominador en \eqref{eqn:bayes-thm} es un cuello de botella computacional, pues es una integral complicada en dimensiones usualmente altas. En la práctica se utilizan algoritmos para muestrear de $p(\theta |x)$ sin conocer su forma explícita. Los \textit{métodos de Monte Carlo con cadenas de Markov} (MCMC por sus siglas en inglés) construyen una cadena de Markov ergódica cuya distribución estacionaria es $p(\theta | x)$, de manera que desde cualquier punto inicial pueda obtenerse una cadena que a la larga dé muestras de la posterior \cite{robert-book}. Estos algoritmos facilitaron el uso de procedimientos bayesianos, pero en modelos complicados la convergencia es difícil y no escalan al tamaño masivo de los conjuntos de datos modernos.
+
+Para mejorar la convergencia de MCMC, existen algoritmos que exploran $\Theta$ de manera más eficiente usando ideas de mecánica estadística \cite{betancourt-hmc}, pero siguen sin ser suficientemente rápidos para usarse en grandes volúmenes. Por otro lado, trabajo reciente de Broderick y Campbell \cite{coresets, coresets-greedy} propone métodos para construir \textit{coresets}, submuestras ponderadas que aproximan la verosimilitud de la totalidad de los datos, y efectivamente reducen el tamaño de muestra. Esta idea es perfectamente compatible con MCMC y con la clase de algoritmos que este trabajo estudiará: los variacionales.
+
+Los algoritmos frecuentistas se benefician del descenso en gradiente estocástico que utiliza muestras pequeñas para estimar el gradiente de la función de pérdida y pueden así utilizarse en contextos masivos \cite{goodfellow}. Para poder usar esta ventaja en la formulación bayesiana, la inferencia debe traducirse en un problema de optimización. Como se verá con detenimiento en la siguiente sección, una formulación natural es aproximar la posterior $p$ con la distribución $q^*$ que minimice la divergencia de Kullback-Leibler de $q$ a $p$ en un conjunto $\mathcal{Q}$. 
 
 \begin{equation}
 	q^* = \argmin_{q \in \mathcal{Q}} D_{KL}(q || p)	
 \end{equation}
 
-Es importante notar que la calidad de la solución depende del espacio $\mathcal{Q}$, que tiene que ser suficientemente rico para aproximar fielmente a $p$ pero suficientemente estructurado para que el algoritmo converja en la práctica. 
+Es importante notar que la calidad de la solución depende del espacio $\mathcal{Q}$, que tiene que ser suficientemente rico para aproximar fielmente a $p$ pero suficientemente estructurado para que el algoritmo converja en la práctica. El objetivo de este texto es introducir un algoritmo variacional no paramétrico propuesto por Liu y Wang \cite{svgd}, que que elige como $\mathcal{Q}$ un espacio de Hilbert con núcleo reproductor (RKHS por sus siglas en inglés) y que puede interpretarse como descenso en gradiente (funcional) en este espacio.
 
-
-
-
+\section*{Contenidos} 
+La sección 2 profundiza en la función objetivo de la inferencia variacional, y explora la evolución de los métodos computacionales para su solución. En la sección 3 se introducen los espacios de Hilbert con núcleo reproductor y la teoría necesaria para comprender el algoritmo del que trata la sección 4.
+Finalmente, la sección 5 estudia la convergencia del algoritmo y en la sección 6 se analiza su desempeño en distintos modelos.
 \end{document}
