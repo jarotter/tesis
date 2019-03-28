@@ -1,5 +1,5 @@
 # texpad
-tex/*.pdf
+tex/**/*.pdf
 tex/.texpadtmp/*
 
 # Referencias
