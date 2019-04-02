@@ -8,7 +8,40 @@ La inferencia variacional busca aproximar una medida de probabilidad $p$ con la 
 	q^* = \argmin_{q \in \mathcal{Q}} D_{KL}(q||p)
 \end{equation*}
 
-La función objetivo del problema variacional es la divergencia de Kullback-Leibler, objeto al que dedicamos la siguiente sección. 
+Para estudiar con detenimiento la función objetivo de la inferencia variacional, la construimos a partir de teoría de decisión con la doble intención de profundizar en la inferencia variacional y en la construcción del marco bayesiano. 
 
-Esta función 
+\section{Teoría Bayesiana}
+\begin{definition}
+	Un \textit{problema de decisión} es una tupla $(\mathcal{E}, \mathcal{C}, \mathcal{D}, \preceq)$ donde
+	\begin{itemize}
+		\item $\mathcal{E}$ es un $\sigma$-álgebra de eventos relevantes $E$
+		\item $\mathcal{C}$ es un conjunto de consecuencias $c$
+		\item $\mathcal{D}$ es un conjunto de decisiones y 
+		\item $\prec$ es una relación binaria en $D$.
+	\end{itemize}
+\end{definition}
+	
+Esta definición intenta formalizar la experiencia de un individuo o grupo (a quien llamaremos tomadora de decisiones) que debe tomar una opción de $\mathcal{D}$ en contexto de incertidumbre. Ella tiene control sobre la decisión que toma, pero una vez elegida $d_i$ puede ocurrir cualquiera de los eventos $E_j$, y la combinación trae como consecuencia a $c_j$. Por facilidad notacional, estamos obviando el subíndice correspondiente a la decisión. De inicio los eventos y consecuencias no tienen que ser los mismos para cada decisión, pero tomando las intersecciones correspondientes es posible transformar el problema a uno donde sí, de manera que nuestra notación no pierde generalidad.
+
+En \cite{bernardo} se postula una serie de axiomas para resolver problemas de decisión de manera coherente. Aceptando estos axiomas, se concluye que 
+\begin{enumerate}[label=\roman*]
+	\item toda incertidumbre sobre $\mathcal{E}$ puede extraerse de $\prec$ y cuantificarse de manera única en una medida de probabilidad $P(E)$
+	\item toda preferencia debe cuantificarse en una \textit{función de utilidad} \\  $u: \mathcal{D}\times\mathcal{E} \to \mathbb{R}$  que captura la utilidad de haber tomado la decisión $d$ dado que ocurrió el evento $E$ y
+	\item La solución coherente al problema de decisión es elegir la decisión que maximice la utilidad esperada.
+\end{enumerate}
+
+\begin{definition}
+	La \textit{solución de Bayes} a un problema de decisión es 
+	\begin{equation}
+	d^* = \argmax_{d \in\mathcal{D}} \ \mathbb{E}_{\mu_E}\left[u(d, E)\right]
+	\end{equation}
+\end{definition}
+
+En \cite{bernardo} se muestra que los problemas de estimación puntual, por regiones, predicción y contraste de hipótesis pueden plantearse como un problema de decisión, por lo que todos tienen solución de Bayes. El mismo texto muestra que la manera en que la tomadora de decisiones debe actualizar sus creencias sobre $E$, dado que sucedió $G$,  para ser consistente con los axiomas es usando el teorema de Bayes \eqref{eqn:bayes-thm}
+\begin{equation*}
+	P(E|G) = \frac{P(G|E)P(E)}{P(G)}	
+\end{equation*}
+
+
+
 \end{document}
