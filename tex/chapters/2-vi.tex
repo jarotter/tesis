@@ -1,18 +1,14 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\chapter*{Inferencia variacional}
-A diferencia de los métodos MCMC, que se basan en muestreo, la inferencia
-variacional plantea el problema de aproximar la posterior como uno de
-optimización. A saber,
+\chapter{Inferencia variacional}
+La inferencia variacional busca aproximar una medida de probabilidad $p$ con la $q\in\mathcal{Q}$ que más se le parezca en cierto sentido. Formalmente, se elige la solución a la ecuación \eqref{eqn:vi} que reescribimos aquí
 
-\begin{equation}
-q^* = \argmin _{q \in \mathcal{Q}} D_{KL}(q\ ||\ p)
-	\label{eqn:vi}
-\end{equation}
+\begin{equation*}
+	q^* = \argmin_{q \in \mathcal{Q}} D_{KL}(q||p)
+\end{equation*}
 
-\section*{La divergencia de Kullback-Leibler}
+La función objetivo del problema variacional es la divergencia de Kullback-Leibler, objeto al que dedicamos la siguiente sección. 
 
-
-
+Esta función 
 \end{document}
