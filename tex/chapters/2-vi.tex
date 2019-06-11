@@ -23,7 +23,7 @@
 	
 Esta definición intenta formalizar la experiencia de un individuo o grupo (a quien llamaremos tomadora de decisiones) que debe elegir una opción de $\mathcal{D}$ en contexto de incertidumbre. Ella tiene control sobre la decisión que toma, pero una vez elegida $d$ puede ocurrir cualquiera de los eventos $\omega$, y la combinación trae como consecuencia a $c$. La teoría bayesiana postula una serie de axiomas para resolver problemas de decisión sin caer en errores sistemáticos. Para una construcción detallada el lector puede referirse a \cite{bernardo}, pero las principales consecuencias que derivan de ellos son
 \begin{enumerate}[label=\roman*]
-	\item toda incertidumbre sobre $\Omega$ puede extraerse de $\prec$ y cuantificarse en una medida de probabilidad $p(\omega)$
+	\item toda incertidumbre sobre $\Omega$ puede extraerse de $\prec$ y cuantificarse en una distribución de probabilidad $p(\omega)$
 	\item toda preferencia debe cuantificarse en una \textit{función de utilidad} \\  $u: \mathcal{D}\times\Omega \to \mathbb{R}$  que captura la utilidad de haber tomado la decisión $d$ dado que ocurrió el evento   $\omega$ y
 	\item la solución al problema de decisión consistente con los axiomas de coherencia es elegir la decisión que maximice la utilidad esperada.
 	\item la manera en que la tomadora de decisiones debe actualizar sus creencias sobre $\omega$, dado que sucedió un evento $\delta$, es usando el teorema de Bayes \eqref{eqn:bayes-thm}
@@ -40,15 +40,15 @@ Esta definición intenta formalizar la experiencia de un individuo o grupo (a qu
 	\end{equation}
 \end{definition}
 
-La notación anterior es un poco abstracta, pero en el caso de datos $x$ generados por un modelo de probabilidad $p(x \mid \theta)$, si inicialmente la tomadora de decisiones cuantifica su incertidumbre sobre $\theta$ con una distribución $p(\theta)$, la manera de actualizar se escribe en la familiar forma
+La notación anterior es un poco abstracta, pero en el caso de datos $x$ generados por un modelo de probabilidad $p(x\mid\theta)$, si inicialmente la tomadora de decisiones cuantifica su incertidumbre sobre $\theta$ con $p(\theta)$, la manera de actualizar se escribe en la familiar forma
 
 \begin{equation*}
 	p(\theta | x ) 	\propto p(x|\theta)p(\theta).
 \end{equation*}
 
-En \cite{bernardo} se muestra que los problemas de estimación puntual, estimación por regiones y contraste de hipótesis pueden plantearse como problemas de decisión, tanto en contextos de inferencia pura como de pronóstico. Esta absoluta generalidad es importante de resaltar, pues todo problema estadístico puede resolverse con el mismo camino: basta dar iniciales, elegir una utilidad y maximizar.
+En \cite{bernardo} se muestra que los problemas de estimación puntual, estimación por regiones y contraste de hipótesis pueden plantearse como problemas de decisión, tanto en contextos de inferencia pura como de pronóstico. Esta absoluta generalidad es importante, pues todo problema estadístico puede resolverse con el mismo camino: basta elegir distribuciones iniciales, una utilidad y maximizar.
 
-Ahora consideraremos un problema de decisión particular que, aunque suene un poco artificial en primera instancia, es de hecho la definición operativa\footnote{Es decir, que pueda utilizarse en el mundo real y operar con números} que Bruno De Finetti usa para probabilidad en \cite{definetti2008}.  Supongamos que interesa cuantificar en una medida de probabilidad la incertidumbre que una tomadora de decisiones tiene acerca de un evento en el que debe ocurrir alguna posibilidad  $\omega \in \Omega$. Ella debe reportar una distribución de probabilidad para las $\omega$, pero nada la obliga a revelar sus verdaderas creencias. Si una vez ocurrido el evento de interés se le recompensará con una cantidad $u(\omega,p(\omega))$ que depende del evento que haya ocurrido y de las probabilidades que había expresado; ¿podrá la función $u$  asegurar que ella reportará sus verdaderas creencias?  Este problema se lo planteó Glenn Brier en 1959 para encontrar una manera de evaluar las predicciones meteorológicas, y la solución que le dio sigue recibiendo su nombre. 
+Ahora consideraremos un problema de decisión particular que aunque suene un poco artificial, es de hecho la definición operativa\footnote{Es decir, que pueda utilizarse en el mundo real} que Bruno De Finetti usa para probabilidad en \cite{definetti2008}.  Supongamos que interesa cuantificar en una medida de probabilidad la incertidumbre que una tomadora de decisiones tiene acerca de un evento en el que debe ocurrir alguna posibilidad  $\omega \in \Omega$. Ella debe reportar una distribución para las $\omega$, pero nada la obliga a revelar sus verdaderas creencias. Si una vez ocurrido el evento de interés se le recompensará con una cantidad $u(\omega,p(\omega))$ que depende del evento que haya ocurrido y de las probabilidades que había expresado; ¿podrá la función $u$  asegurar que ella reporte sus verdaderas creencias?  Este problema se lo planteó Glenn Brier en 1959 para encontrar una manera de evaluar las predicciones meteorológicas, y la solución que le dio sigue recibiendo su nombre. 
 
 \begin{definition}
 	Consideremos un problema de decisión donde el conjunto de decisiones $\mathcal{Q}$ es el de distribuciones de probabilidad sobre ciertos eventos $\Omega$. A la utilidad $u: \mathcal{Q}\times\Omega \to \mathbb{R}$ se le llama \textit{función score}.
@@ -59,11 +59,11 @@ Si la tomadora de decisiones siguiera los axiomas de coherencia, su respuesta se
 \begin{definition}
 	Una función score $u$ es \textit{propia} si
 	\begin{equation*}
-		\sup_{q \in \mathcal{Q}} \mathbb{E}_{\omega\sim p}\left[u(q,\omega)\right] = \mathbb{E}_{\omega\sim p}\left[u(p,\omega)\right]
+		\sup_{Q \in \mathcal{q}} \mathbb{E}_{\omega\sim p}\left[u(Q,\omega)\right] = \mathbb{E}_{\omega\sim p}\left[u(p,\omega)\right]
 	\end{equation*}
 \end{definition}
 
-Es decir, si la tomadora de decisiones maximiza su utilidad esperada reportando sus verdaderas creeencias. Brier probó que la pérdida cuadrática (o de Brier) es una función score propia.
+Es decir, si la tomadora de decisiones maximiza su utilidad esperada reportando sus verdaderas creeencias. Brier probó que la pérdida cuadrática (o \textit{score de Brier}) es una función score propia.
 
 Otra característica que puede incorporarse a la función score del problema, y que Bernardo argumenta es lo que debería hacerse en el conocimiento científico, es sólo evaluar la respuesta en términos de la probabilidad que asigna al evento que sí ocurrió. Esto permite ignorar lo poco acertada que pudo haber sido la tomadora de decisiones en algo que no ocurrió y por tanto no hay forma \enquote{honesta} o \enquote{justa} de evaluar. Como ejemplo para concretar, si se está modelando la probabilidad de que uno de tres eventos (digamos $A, B, C$) suceda y al final sucede $A$, se quiere recompensar a la tomadora de decisiones utilizando solamente la probabilidad que asignó a $A$, sin importar cuánto haya asignado a $B$ y $C$. 
 
@@ -97,83 +97,164 @@ Ahora bien, la tomadora de decisiones puede encontrarse en una situación en la 
 \end{align*}
 
 \begin{definition}
-	Cuando $a=1$, la expresión de arriba se llama \textit{divergencia de Kullback-Leibler} de $p$ a $q$. Es decir, 
-	\begin{equation*}
+	Cuando $a=1$, la expresión de arriba se llama \textit{divergencia de Kullback-Leibler} a $p$ desde $q$. Es decir, 
+	\begin{equation}
 	\kl(p \mmid q) = \mathbb{E}_{\omega \sim p}\left[\log\frac{p(\omega)}{q(\omega)}\right]	
-	\end{equation*}
-Si $p$ y $q$ son miembros de la misma familia paramétrica, digamos $p(x)=f(x; \theta_0)$ y $q(x)=f(x; \theta_1)$, también se usa la notación $\kl(\theta_0\mmid\theta_1)$.
+	\end{equation}
 \end{definition}
 
 \section{La divergencia de Kullback-Leibler}
-El término \textit{divergencia} es importante de resaltar; pues aunque la definición constructiva de $\kl$ muestra que efectivamente mide una diferencia, no es una métrica en el sentido estricto, pues no es simétrica ni satisface la desigualdad del triángulo. La simetría puede obligarse de la manera usual, pero la función que resulta tampoco es una métrica.
+El término \textit{divergencia} es importante de resaltar porque, aunque la construcción recién hecha muestra que $\kl$ mide una noción de diferencia entre distribuciones de probabilidad; no es una métrica en el sentido estricto (no es simétrica ni satisface la desigualdad del triángulo). La simetría es fácil de imponer tomando $\skl(p, q) = \kl(p\mmid q) + \kl(q \mmid p)$, y esta cantidad es a la que Kullback llamaba \textit{divergencia}, pues prefería el término \enquote{información de discriminación} para la versión asimétrica. La definición (2.7) se ha mantenido porque la asimetría entre las distribuciones resulta particularmente útil. A continuación probaremos algunas propiedades de la divergencia de Kullback-Leibler, y para ello introducimos una definición más formal que depende de algunos resultados de teoría de la medida que enunciamos sin demostración.
 
 \begin{definition}
-La \textit{divergencia simétrica de Kullback-Leibler} es la función $\skl$ definida por
-\begin{equation*}
-2\skl(p, q) = \kl(p\mmid q) + \kl(q \mmid p)	
-\end{equation*}
+Sean $(\Omega, \mathcal{F})$ un espacio medible y $P, Q$ dos medidas en $\Omega$. $P$ es \textit{absolutamente continua con respecto a} $Q$, denotado $P\ll Q$ si
+	para todo $E\in\mathcal{F}$,  $Q(E)=0 \Rightarrow P(E)=0$.
 \end{definition}
 
-A continuación se prueban algunas propiedades de la divergencia de Kullback-Leibler.
+\begin{theorem}[Radon-Nikodym] \ \\
+Sea $(\Omega, \mathcal{F})$  un espacio medible y $P, Q: \Omega \to \overline{\mathbb{R}}$ dos medidas $\sigma$-finitas en $\Omega$ tales que $P \ll Q$. Entonces, existe una función medible $f: \Omega \to \overline{\mathbb{R}}$ tal que para todo $E \in \mathcal{F}$
+\begin{equation}
+	P(E) = \int_E f dQ
+\end{equation}
+\end{theorem}
+\begin{proof} \ \\
+Ver \cite{bernardo}.	
+\end{proof}
+
+
+\begin{definition}
+A la función $f$ en la ecuación (2.3) se le llama \textit{derivada de Radon-Nikodym de} $P$ \textit{con respecto a} $Q$, y se denota 
+\begin{equation*}
+\frac{dP}{dQ} := f
+\end{equation*}
+Cuando $P$ es una medida de probabilidad se usa el término \textit{densidad de probabilidad generalizada (f.d.p.g)}.
+\end{definition}
+
+\begin{prop}
+	Sea $(\Omega, \mathcal{F})$ un espacio medible y $P, Q \ll L$ medidas $\sigma$-finitas en $\Omega$. 
+	\begin{enumerate}[label=\roman*.]
+		\item 
+			\begin{equation*}
+				\frac{d(P+Q)}{dL}=\frac{dP}{dL}+\frac{dQ}{dL}\quad L\text{-casi dondequiera}
+			\end{equation*}
+		\item Si $P\ll Q$
+			\begin{equation*}
+				\frac{dL}{dP} = \frac{dL}{dQ}\frac{dQ}{dP} \qquad L\text{-casi dondequiera}
+			\end{equation*}
+		\item Si $g$ es $P$-integrable,
+			\begin{equation*}
+				\int g dP=\int g \frac{dP}{dL}dL
+			\end{equation*}
+	\end{enumerate}
+\end{prop}
+\begin{proof} \ \\
+Ver \cite{bernardo}.	
+\end{proof}
+
+
+\begin{definition}
+Sea $(\Omega, \mathcal{F})$ un espacio de medible y $P, Q: \mathcal{F} \to [0,1]$ dos medidas de probabilidad tales que $P\ll Q$. La \textit{divergencia de Kullback-Leibler} a $Q$ desde $P$ es
+\begin{equation}
+	\kl(P\mmid Q) := \int\log\left(\frac{dP}{dQ}\right)dP
+\end{equation}
+\end{definition}
+
+Si $p$ y $q$ son densidades de probabilidad, por definición $p=\frac{dP}{d\lambda}$ y $q=\frac{dQ}{d\lambda}$, donde $\lambda$ es la medida de Lebesgue. Entonces, podemos reescribir (2.4) como
+
+\begin{equation*}
+\kl(P\mmid Q) = \int\log\left(
+		\frac{\frac{dP}{d\lambda}}{\frac{dQ}{d\lambda}}
+	\right)
+	\frac{d\lambda}{d\lambda}dP	
+	= \int\log\left(\frac{p}{q}\right)pd\lambda
+\end{equation*}
+ 
+que es (2.2). Esta observación es de hecho más general, pues se satisface para cualquier medida $\mu$ tal que $P\ll Q \ll \mu$. 
+\begin{theorem} \ \\
+Sean $p_X, q_X$ densidades de probabilidad para una variable aleatoria $X$. $\kl$ es invariante bajo  transformaciones invertibles de $X$. Es decir, para toda función invertible $g$, si $Y=g(X)$ entonces $\kl(p_X\mmid q_X) = \kl(p_Y\mmid q_Y)$.
+
+\end{theorem}
+
+\begin{proof} \ \\
+\begin{align*}
+D_{KL}(p_Y\mmid q_Y) &= \int\log\left(\frac{p_Y}{q_Y}\right)p_Yd\lambda \\
+&= \int \log\left(\frac{d\mu_Y}{d\nu_Y}\right)d\mu_Y \\
+&= \int \log\left(\frac{d}{d}\right)\frac{d\mu_Y}{d\mu_X}d\mu_X
+\end{align*}
+
+\end{proof}
+
+
+
+
+\begin{lemma}[Desigualdad log sum] \ \\
+	Sean $a_1, \cdots, a_n$ y $b_1, \cdots, b_n \geq 0$. Si denotamos $a=\sum_ia_i$ y $b=\sum_ib_i$, entonces
+	\begin{equation*}
+	\sum_{i=1}^na_i\log\frac{a_i}{b_i} \geq a\log\frac{a}{b}	
+	\end{equation*}
+\end{lemma}
+\begin{proof} \ \\
+Sea $f(x)=x \log x$. 	
+\begin{align*}
+\sum_{i=1}^na_i\log\frac{a_i}{b_i} &= 
+	\sum_{i=1}^nb_if\left(\frac{a_i}{b_i}\right) \\
+	&= b\sum_{i=1}^n\frac{b_i}{b}f\left(\frac{a_i}{b_i}\right) \\
+	&\geq bf\left(\sum_{i=1}^n\frac{b_i}{b}\frac{a_i}{b_i}\right)\\
+	&= bf\left(\frac{a}{b}\right) \\
+	&= a\log\frac{a}{b}
+\end{align*}
+La desigualdad se sigue de Jensen, pues $\sum_i\frac{b_i}{b}=1$ y $f$ es convexa, pues $f''(x)=\frac{1}{x}$.
+\end{proof}
+
 
 \begin{theorem}[Propiedades de $\kl$ -- caso general] \ \\
 Consideremos una familia $\mathcal{F}$ de distribuciones de probabilidad para una variable aleatoria $X$ con densidades generalizadas $\{p\}$. Entonces,
 \begin{enumerate}[label=\roman*.]
 
-\item $\kl(p \mmid q) \geq 0$ para todas $p, q$ con igualdad si y sólo si $q \ll p$ y $p=q$ casi en donde quiera (relativo a P).
+\item $\kl(p \mmid q) \geq 0$ para todas $p, q$ con igualdad si y sólo si $q \ll p$ y $p=q$ casi dondequiera.
 \item $\kl$ es convexa en ambos argumentos
 \item Para toda transformación invertible $X=g^{-1}(Y)$,
 		\begin{equation*}
-		\kl\left(f_Y(y;\theta_0), f_Y(y;\theta_1)\right) =
-		\kl\left(f_X(x;\theta_0), f_X(x;\theta_1)\right) 
+			\kl\left(p_Y\mmid q_Y\right) =
+			\kl\left(p_X\mmid q_X\right) 
 		\end{equation*}
+
 \end{enumerate}
 \end{theorem}
 \begin{proof} \ \\
 Nótese primero que por la desigualdad de Jensen,
-\begin{equation*}
--\kl(p\mmid q) 
-	= \mathbb{E}_{x\sim p}\left[\log\frac{q(x)}{p(x)}\right]
-	\leq\log\mathbb{E}_{x\sim p}\left[\frac{q(x)}{p(x)}\right]
-\end{equation*}
-
-Usando la convención $\log\frac{0}{0}=0$, el término de la derecha es 0 si y sólo si $p(x)=q(x)$ casi en donde quiera (relativo a $P$) y cuando $p(x)=0$ debe darse que $q(x)=0$. \\
-
-La prueba de convexidad es estándar. Definamos
 \begin{align*}
-	P_\lambda = (1-\lambda)P_0	
+-\kl(p\mmid q) 
+	&= \mathbb{E}_{x\sim p}\left[\log\frac{q(x)}{p(x)}\right] \\
+	&\leq\log\mathbb{E}_{x\sim p}\left[\frac{q(x)}{p(x)}\right] \\
+	&= \log\int_\mathcal{X}qd\lambda\\
+	&= \log 1 \\
+	&= 0
 \end{align*}
 
+Como $-\log$ es estrictamente convexa, usar la desigualdad de Jensen lleva a la igualdad si y sólo si $p=q$ casi dondequiera.
+La prueba de convexidad es estándar. Definamos
+\begin{align*}
+	p_\lambda(x) &= \lambda p_0(x) + (1-\lambda)p_1(x):=a_1+a_2 \\
+	q_\lambda(x) &= \lambda q_0(x) + (1-\lambda)q_1(x):=b_1+b_2
+\end{align*}
+Entonces, 
 
-Para probar $(iii)$, basta observar que por ser una reparametrización, se cumple por definición que $f_\varphi(x, \varphi(\theta))=f(x, \theta)$ para todas $\theta, x$. \\
+\begin{align*}
+\kl(p_\lambda\mmid q_\lambda) &= \int_\mathcal{X}p_\lambda(x)\log\frac{p_\lambda(x)}{q_\lambda(x)}dx \\
+&=\int_\mathcal{X}(a_1+a_2)\log\frac{a_1+a_2}{b_1+b_2}dx \\
+&\leq \int_\mathcal{X}a_1\log\frac{a_1}{b_1}+a_2\log\frac{a_2}{b_2}dx \\
+&= \int_\mathcal{X}\lambda p_0(x)\log\frac{\lambda p_0(x)}{\lambda q_0(x)}dx +\int_\mathcal{X}(1-\lambda) p_1(x)\log\frac{(1-\lambda) p_1(x)}{(1-\lambda) q_1(x)}dx \\
+&= \lambda \kl(p_0\mmid q_0) + \kl(p_1\mmid q_1)
+\end{align*}
 
+por lo que $\kl$ es convexa. \\
 
-\begin{theorem}[Propiedades de $\kl$ -- caso paramétrico] \ \\
-Consideremos una familia paramétrica $\mathcal{F} = \{f(\ \cdot \ ;\theta): \theta \in \Theta \}$ de distribuciones de probabilidad para una variable aleatoria $X$. Entonces,
-\begin{enumerate}[label=\roman*.]
-	\item para toda reparametrización $\varphi$,
-		\begin{equation*}
-		\kl\left(\varphi(\theta_0)\mmid\varphi(\theta_1)\right) = 
-			\kl\left(\theta_0\mmid\theta_1\right)
-		\end{equation*}
-		
-	\item $\kl(\theta_0\mmid \theta_1)$ es de orden dos en $\|\theta_0-\theta_1\|$.
-\end{enumerate} 
-\end{theorem}
-\begin{proof}
-Para $(iv)$, nótese que por el teorema de cambio de variable
+Por último, nótese que por el teorema de cambio de variable
 \begin{equation*}
-\frac{f_Y(y;\theta_0)}{f_Y(y;\theta_1)} = 
-\frac{f_X\left(g^{-1}(y); \theta_0\right)\mid\frac{dg}{dy}\mid}
-{f_X\left(g^{-1}(y); \theta_1\right)\mid\frac{dg}{dy}\mid} = 
-\frac{f_X(x;\theta_0)}{f_X(x;\theta_1)}
+\frac{p_Y(y)}{q_Y(y)} =  \frac{p_X\left(g^{-1}(y)\right)\mid\frac{dg}{dy}\mid}{q_X\left(g^{-1}(y)\right)\mid\frac{dg}{dy}\mid} = 
+\frac{p_X(x)}{q_X(x)}
 \end{equation*}
-\end{proof}
-
-y sustituyendo en la definición 2.7 se obtiene el resultado. \\
-
-
-Finalmente, por 
 \end{proof}
 
 
