@@ -1,0 +1,54 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+
+\chapter{Teoría de probabilidad}
+En este capítulo revisamos algunos conceptos de teoría de la medida y probabilidad. Las definiciones dan por hecho existencia y unicidad y se omiten las pruebas de todos los resultados. 
+
+\begin{definition}
+Sea $\Omega\neq\emptyset$. Una \textit{$\sigma$-álgebra en $\Omega$} es una colección $\mathcal{F}\subseteq\mathcal{P}(\Omega)$ tal que
+\begin{enumerate}[label=\roman*.]
+	\item $X \in \mathcal{F}$
+	\item Si $A\in\mathcal{F}$, entonces $\Omega\setminus A \in \mathcal{F}$.
+	\item Si $(A_n)_{n=1}^\infty$ es una sucesión en $\mathcal{F}$, entonces $\cup_nA_n\in \mathcal{F}$.
+\end{enumerate}
+La pareja $(\Omega, \mathcal{F})$ es un \textit{espacio medible}. A los elementos $A\in\mathcal{F}$ se les dice \textit{conjuntos medibles} de este espacio.
+\end{definition}
+
+De las leyes de DeMorgan se sigue que una $\sigma$-álgebra también es cerrada bajo intersecciones contables. 
+
+En analogía con la continuidad topológica, las funciones que preservan estructura reciben un nombre especial.
+
+\begin{definition}
+Sean $(\Omega, \mathcal{F})$ y $(\Lambda, \mathcal{E})$ espacios medibles. Una función $f: \Omega \to \Lambda$ es $\mathcal{F,E}$-\textit{medible} si para todo $B\in\mathcal{E}$
+\begin{equation*}
+\pim_f(B)\in\mathcal{F}	
+\end{equation*}
+Es decir, si la preimagen de cada medible es medible. Cuando no se preste a ambigüedad, omitimos las $\sigma$-álgebras para simplificar la notación.
+\end{definition}
+
+\begin{definition}
+Sea $(\Omega, \tau)$ un espacio topológico. La $\sigma$\textit{-álgebra de Borel} de este espacio es la mínima $\sigma$-álgebra en $\Omega$ que contiene a $\tau$. Se le denota $\mathbb{B}(\Omega, \tau)$.
+En el caso particular de $\mathbb{R}^d$ con su topología usual, usamos simplemente $\mathbb{B}^d$.
+\end{definition}
+
+\begin{definition}
+Sea $(\Omega, \mathcal{F})$ un espacio medible. Una \textit{medida} en $\Omega$ es una función $\mu: \mathcal{F} \to \overline{\mathbb{R}}$ tal que
+\begin{enumerate}[label=\roman*.]
+	\item $\mu(A)\geq \mu(\emptyset)=0$ para todo $A\in\mathcal{F}$
+	\item Si $(A_n)_{n=1}^\infty$ es una sucesión de conjuntos disjuntos en $\mathcal{F}$, 
+	\begin{equation*}
+	\mu\left(\bigcup_{\ n\in\mathbb{N}}A_n\right)=
+	\sum_{n\in\mathbb{N}}\mu(A_n)	
+	\end{equation*}
+\end{enumerate}
+La terna $(\Omega, \mathcal{F}, \mu)$ recibe el nombre de \textit{espacio de medida}. Si $\mu(\Omega)=1$, la función $\mu$ es una \textit{medida de probabilidad} y $(\Omega, \mathcal{F}, \mu)$ un \textit{espacio de probabilidad}.
+\end{definition} 
+
+\begin{definition}
+Consideremos $(\Omega, \mathcal{F}, \mu)$ un espacio de medida. Una propiedad se satisface \textit{casi dondequiera relativo a} $\mu$, denotado $\mu$-\textit{c.d} si se satisface para toda $\omega\in \Omega\setminus A$ y $\mu(A)=0$.
+\end{definition}
+
+
+
+
+\end{document}
