@@ -18,18 +18,23 @@
 
 % ------------- MATE-GENERAL ---------
 \usepackage{amsmath, amssymb, amsthm}
-\DeclareMathOperator{\pim}{preim}
+
+% . . . BIGTIMES
+\usepackage{mathabx}
 % ------------------------------------
 
-% ----------- ARGMIN/MAX ---------------
-\DeclareMathOperator*{\argmax}{arg\,\max}
-\DeclareMathOperator*{\argmin}{arg\,\min}
-% --------------------------------------
-
-% ------------ KULLBACK-LEIBLER ---------
+% ------------ OPERADORES ---------
+% . . . KULLBACK-LEIBELR
 \DeclareMathOperator*{\mmid}{\mid\mid}
 \DeclareMathOperator*{\kl}{D_{KL}}
 \DeclareMathOperator*{\skl}{S_{KL}}
+
+% . . . ARGMIN/ARGMAX
+\DeclareMathOperator*{\argmax}{arg\,\max}
+\DeclareMathOperator*{\argmin}{arg\,\min}
+
+% . . . PREIMAGEN
+\DeclareMathOperator{\pim}{preim}
 % ---------------------------------------
 
 % -------- PARA MIS NOTAS ---------
@@ -37,14 +42,20 @@
 % ----------------------------------
 
 % ----------- THEOREM-LIKE ENVS -------
-\theoremstyle{definition}
-\newtheorem{definition}{Definición}[chapter]
-\newtheorem{obs}{Observación}[chapter]
-
-\theoremstyle{theorem}
+% . . . BREAK (para saltar líneas en thm)
+\newtheoremstyle{break}
+  {\topsep}{\topsep}%
+  {\itshape}{}%
+  {\bfseries}{}%
+  {\newline}{}%
+\theoremstyle{break}
 \newtheorem{prop}{Proposición}[chapter]
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{lemma}{Lema}[chapter]
+
+% . . . DEFINITION
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[chapter]
 % -----------------------------------------
 
 % ------ FORMATO LISTAS ----
