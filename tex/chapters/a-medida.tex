@@ -94,12 +94,16 @@ La integral de Lebesgue satisface las siguientes propiedades.
 	\item $f \leq g \; \mu\text{-c.d} \Rightarrow \int fd\mu \leq \int gd\mu$
 	\item $f = g\; \mu\text{-c.d} \Rightarrow \int fd\mu = \int gd\mu$
 	\item $\mu(A)=0\Rightarrow \int_Afd\mu=0$
-	\item La desigualdad de Jensen: si $\varphi$ es convexa
-		\begin{equation*}
-			\varphi\left(\int fd\mu \right) \leq \int\left(\varphi\circ f\right)d\mu
-		\end{equation*}
 \end{enumerate}	
 \end{theorem}
+
+\begin{prop}\label{thm:jensen}
+Sea $\varphi$ una función convexa.
+\begin{equation*}
+			\varphi\left(\int fd\mu \right) \leq \int\left(\varphi\circ f\right)d\mu
+\end{equation*}
+\end{prop}
+
 
 Calcular el volumen usual es integrar con respecto a la medida de Lebesgue, pero la definición que dimos es más general. Supongamos que conocemos una medida $\mu$ en $\Omega$, y sea $f$ una función no-negativa. Puede probarse que el mapeo
 \begin{equation*}
@@ -128,6 +132,21 @@ f = \frac{d\nu}{d\mu}
 \end{equation*}
 o por conveniencia , $d\nu = fd\mu$. Cuando $\nu$ es una medida de probabilidad, se le llama a $f$ \textit{función de densidad de probabilidad generalizada} o f.d.p.g.
 \end{definition}
+
+\begin{prop}\label{thm:props-rn}
+Las derivadas de Radon-Nikodym satisfacen
+\begin{enumerate}[label=\roman*.]
+	\item aditividad
+		\begin{equation*}
+			\frac{d(\mu+\nu)}{d\lambda} = \frac{d\mu}{d\lambda}+\frac{d\nu}{d\lambda}
+		\end{equation*}
+	\item regla de la cadena
+		\begin{equation*}
+			\frac{d\mu}{d\lambda} = \frac{d\mu}{d\nu}\cdot\frac{d\nu}{d\lambda}
+		\end{equation*}
+\end{enumerate}
+\end{prop}
+
 
 Los cambios de medida se relacionan con la integral a través de la siguiente ecuación.
 
@@ -171,9 +190,9 @@ En general se usa la notación $g(\xi) = f\left(\omega \mid T=\xi\right)$ porque
 y para el caso de $f=\chi_A$
 
 \begin{equation*}
-\mu\left(A\mid T\in B\right) = 
+\mu\left(A\cap T\in B\right) = 
 	\int _B p(A \mid T=\xi)T_*\mu(d\xi) 	
 \end{equation*}
 
-que es directametne la probabilidad condicional.
+que es exactamente la ecuación de probabilidad condicional como se define en cálculo de probabilidades.
 \end{document}
