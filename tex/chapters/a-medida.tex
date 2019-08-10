@@ -2,8 +2,8 @@
 \begin{document}
 
 \chapter{Medida, integración y probabilidad}
-En este capítulo revisamos algunos conceptos de teoría de la medida y su aplicación a la probabilidad. Las definiciones dan por hecho existencia y unicidad y se omiten las pruebas de todos los resultados. La notación 
 
+En este capítulo revisamos algunos conceptos de teoría de la medida y su aplicación a la probabilidad. Las definiciones dan por hecho existencia y unicidad y se omiten las pruebas de todos los resultados. Referimos a \cite{halmos1949}, \cite{durrett} y \cite{ash}.
 \begin{definition}
 Sea $\Omega\neq\emptyset$. Una \textit{$\sigma$-álgebra en $\Omega$} es una colección $\mathcal{F}\subseteq\mathcal{P}(\Omega)$ tal que
 \begin{enumerate}[label=\roman*.]
@@ -14,12 +14,12 @@ Sea $\Omega\neq\emptyset$. Una \textit{$\sigma$-álgebra en $\Omega$} es una col
 La pareja $(\Omega, \mathcal{F})$ es un \textit{espacio medible}. A los elementos $A\in\mathcal{F}$ se les dice \textit{conjuntos medibles} de este espacio.
 \end{definition}
 
-%De las leyes de De Morgan se sigue que una $\sigma$-álgebra también es cerrada bajo intersecciones contables. 
+De las leyes de De Morgan se sigue que una $\sigma$-álgebra también es cerrada bajo intersecciones contables. 
 
 En analogía con la continuidad topológica, las funciones que preservan estructura reciben un nombre especial.
 
 \begin{definition}
-Sean $(\Omega, \mathcal{F})$ y $(\Lambda, \mathcal{E})$ espacios medibles. Una función $f: \Omega \to \Lambda$ es $\mathcal{F,E}$-\textit{medible} si para todo $B\in\mathcal{E}$
+Sean $(\Omega, \mathcal{F})$ y $(\Xi, \mathcal{E})$ espacios medibles. Una función $f: \Omega \to \Xi$ es $\mathcal{F,E}$\textit{-medible} si para todo $B\in\mathcal{E}$
 \begin{equation*}
 \pim_f(B)\in\mathcal{F}	
 \end{equation*}
@@ -31,9 +31,9 @@ Sea $(\Omega, \tau)$ un espacio topológico. La $\sigma$\textit{-álgebra de Bor
 En el caso particular de $\mathbb{R}^d$ con su topología usual, usamos simplemente $\mathbb{B}^d$.
 \end{definition}
 
-La idea detrás de esta definición es más general, y puede hablarse de la mínima $\sigma$-álgebra que contenga a cualquier colección de conjuntos $\mathcal{E}$. En este caso, llamamos a $\mathcal{E}$ \textit{conjunto generador}, y denotamos a la sigma álgebra $\sigma(\mathcal{E})$. Para probar que una propiedad se satisface en todo $A\in\sigma(\mathcal{E})$, basta probarla para todo $E\in\mathcal{E}$. \\
+La idea detrás de esta definición es más general, y puede hablarse de la mínima $\sigma$-álgebra que contenga a cualquier colección de conjuntos $\mathcal{E}$. En este caso, llamamos a $\mathcal{E}$ \textit{conjunto generador}, y denotamos a la sigma álgebra $\sigma(\mathcal{E})$. Para mostrar que una propiedad se satisface en todo $A\in\sigma(\mathcal{E})$, basta probarla para todo $E\in\mathcal{E}$. \\
 
-Los espacios medibles son importantes porque en ellos puede definirse una buena forma de cuantificar \enquote{volumen}. 
+Los espacios medibles son importantes porque en ellos puede definirse una buena forma de cuantificar volumen.
 
 \begin{definition}
 Sea $(\Omega, \mathcal{F})$ un espacio medible. Una \textit{medida} en $\Omega$ es una función $\mu: \mathcal{F} \to \overline{\mathbb{R}}$ tal que
@@ -45,12 +45,154 @@ Sea $(\Omega, \mathcal{F})$ un espacio medible. Una \textit{medida} en $\Omega$ 
 	\sum_{n\in\mathbb{N}}\mu(A_n)	
 	\end{equation*}
 \end{enumerate}
-La terna $(\Omega, \mathcal{F}, \mu)$ recibe el nombre de \textit{espacio de medida}. Si $\mu(\Omega)=1$, la función $\mu$ es una \textit{medida de probabilidad} y $(\Omega, \mathcal{F}, \mu)$ un \textit{espacio de probabilidad}.
+La terna $(\Omega, \mathcal{F}, \mu)$ recibe el nombre de \textit{espacio de medida}. Si $\mu(\Omega)=1$, la función $\mu$ es una \textit{medida de probabilidad} y $(\Omega, \mathcal{F}, \mu)$ un \textit{espacio de probabilidad}. De forma genérica, $P$ y $Q$ denotarán medidas de probabilidad.
 \end{definition} 
 
 \begin{definition}
-Consideremos $(\Omega, \mathcal{F}, \mu)$ un espacio de medida. Una propiedad se satisface \textit{casi dondequiera relativo a} $\mu$, denotado $\mu$-\textit{c.d} si se satisface para toda $\omega\in \Omega\setminus A$ y $\mu(A)=0$.
+Una propiedad se satisface \textit{casi dondequiera relativo a} $\mu$, denotado $\mu$-\textit{c.d} si se satisface para toda $\omega\in \Omega\setminus A$ y $\mu(A)=0$. Cuando no se preste a ambigüedad  omitimos la medida.
 \end{definition}
 
+Un ejemplo importante de medida es el volumen como se entiende en la vida cotidiana en $\mathbb{R}^3$, área en $\mathbb{R}^2$ y longitud en $\mathbb{R}$. De hecho fue para satisfacer estas propiedades es que necesitó limitarse el dominio de una medida a un sigma álgebra y no todo $\mathcal{P}(\Omega)$. 
 
+\begin{definition}
+	La \textit{medida de Lebesgue en $\mathbb{R}^d$} es la única medida \\ $\lambda:\mathbb{B}^d\to\overline{\mathbb{R}}$ tal que
+	\begin{equation*}
+		\lambda\left(\bigtimes_{i=1}^d (a_i, b_i]\right)	= \prod_{i=1}^d(b_i-a_i)
+	\end{equation*}
+	Equivalentemente, es la única medida en este espacio invariante ante traslaciones y rotaciones. 
+\end{definition}
+
+En un curso de cálculo integral se introduce la integral de Riemann como herramienta para calcular el área bajo la gráfica de una función integrable $f$. El cálculo en varias variables se extiende esta idea a funciones de $\mathbb{R}^n$ en $\mathbb{R}$ y se muestra que para calcular \enquote{el} volumen de un conjunto acotado $A$ basta integrar la la función constante $1$ sobre $A$. Si las medidas en efecto generalizan la noción de volumen, también generalizan a la integral. Introducimos primero una clase sencilla de funciones integrables, y una integral intuitiva pero restringida a estas funciones que extendemos paso a paso sin demostraciones.
+
+\begin{definition}\label{def:int}
+Sea $(\Omega, \mathcal{F}, \mu)$ un espacio de medida. Una función no negativa $\varphi:\Omega\to\mathbb{R}$ es \textit{simple} si sólo toma un número finito de valores. Es decir, $\varphi=\sum_{i=1}^na_i\chi_{_{A_i}}$ con los $A_i$ disjuntos. La \textit{integral de $\varphi$ con respecto a $\mu$} es
+\begin{equation*}
+	\int\varphi d\mu := \sum_{i=1}^n a_i\mu(A_i)
+\end{equation*}
+Extendemos la integral a funciones medibles no negativas $g$ tomando
+\begin{equation*}
+	\int g d\mu = \sup_{\varphi \leq g}\int fd\mu
+\end{equation*}
+ Finalmente, si usando la descomposición $f=f^+ -f^-$ con $f^+(\omega)=\max\left(f(\omega), 0\right)$ y $f^-(\omega)=\max\left(-f(\omega), 0\right)$ se satisface que $\int f^+d\mu, \int f^-d\mu < \infty$, se dice que $f$ es \textit{integrable}, y
+ \begin{equation*}
+ \int f d\mu = 	\int f^+d\mu - \int f^-d\mu
+ \end{equation*}
+\end{definition}
+
+\begin{definition}
+	La integral de una función $\mu$-integrable $f$ sobre un conjunto $A$ es
+	\begin{equation*}
+	\int_A fd\mu = \int f\cdot\chi_a d\mu	
+	\end{equation*}
+\end{definition}
+
+\begin{theorem}\label{thm:props-int}
+La integral de Lebesgue satisface las siguientes propiedades.
+\begin{enumerate}[label=\roman*.]
+	\item $\int (f+g)d\mu = \int f d\mu + \int g d\mu$
+	\item $\int(\alpha f)d\mu = \alpha \int f d\mu$
+	\item $f \leq g \; \mu\text{-c.d} \Rightarrow \int fd\mu \leq \int gd\mu$
+	\item $f = g\; \mu\text{-c.d} \Rightarrow \int fd\mu = \int gd\mu$
+	\item $\mu(A)=0\Rightarrow \int_Afd\mu=0$
+\end{enumerate}	
+\end{theorem}
+
+\begin{prop}\label{thm:jensen}
+Sea $\varphi$ una función convexa.
+\begin{equation*}
+			\varphi\left(\int fd\mu \right) \leq \int\left(\varphi\circ f\right)d\mu
+\end{equation*}
+\end{prop}
+
+
+Calcular el volumen usual es integrar con respecto a la medida de Lebesgue, pero la definición que dimos es más general. Supongamos que conocemos una medida $\mu$ en $\Omega$, y sea $f$ una función no-negativa. Puede probarse que el mapeo
+\begin{equation*}
+	\nu(A)=\int_Afd\mu 
+\end{equation*} 
+es una medida en $\Omega$. Expresiones como la del lado derecho deberían resultar familiar de un curso de cálculo de probabilidades, pues cuando $\Omega=\mathbb{R}$ y $\mu=\lambda$, las funciones integrables no-negativas son exactamente densidades de probabilidad. Esto significa que la probabilidad $P(X\in [a,b])=F(b)-F(a)$ ($F$ es una antiderivada de $F$) es en realidad una \textit{medida de probabilidad} en $\mathbb{R}$ y la densidad $f$ es la manera de cambiar entre la medida de Lebesgue y la medida \enquote{probabilidad de $X$}, $\nu$. 
+
+\begin{definition}
+$\nu$ es \textit{absolutamente continua con respecto a} $\mu$, denotado $\nu \ll \mu$, si para todo conjunto medible $A$, $\mu(A)=0 \Rightarrow \nu(A)=0$. 
+\end{definition}
+
+La discusión de arriba sugiere que dadas una medida y una función no-negativa podemos generar una medida absolutamente continua con respecto la primera usando las propiedades del teorema \ref{thm:props-int}. El converso también es cierto.
+
+\begin{theorem}[Radon-Nikodym]
+Sea $(\Omega, \mathcal{F})$ un espacio medible y $\mu, \nu$ dos medidas $\sigma$-finitas en él. $\nu \ll \mu$ si y sólo si existe una función medible $f$ tal que para todo $A \in \mathcal{F}$
+\begin{equation}\label{eq:rn-thm}
+	\nu(A) = \int_A f d\mu
+\end{equation}
+Más aún, $f$ está definida de manera única casi dondequiera.
+\end{theorem}
+
+\begin{definition}
+A la función $f$ de la ecuación \eqref{eq:rn-thm} se le llama \textit{derivada de Radon-Nikodym de $\nu$ con respecto a $\mu$}, y para asemejar la notación de cálculo diferencial usamos 
+\begin{equation*}
+f = \frac{d\nu}{d\mu}	
+\end{equation*}
+o por conveniencia , $d\nu = fd\mu$. Cuando $\nu$ es una medida de probabilidad, se le llama a $f$ \textit{función de densidad de probabilidad generalizada} o f.d.p.g.
+\end{definition}
+
+\begin{prop}\label{thm:props-rn}
+Las derivadas de Radon-Nikodym satisfacen
+\begin{enumerate}[label=\roman*.]
+	\item aditividad
+		\begin{equation*}
+			\frac{d(\mu+\nu)}{d\lambda} = \frac{d\mu}{d\lambda}+\frac{d\nu}{d\lambda}
+		\end{equation*}
+	\item regla de la cadena
+		\begin{equation*}
+			\frac{d\mu}{d\lambda} = \frac{d\mu}{d\nu}\cdot\frac{d\nu}{d\lambda}
+		\end{equation*}
+\end{enumerate}
+\end{prop}
+
+
+Los cambios de medida se relacionan con la integral a través de la siguiente ecuación.
+
+\begin{lemma}\label{lemma:trans-int}
+	Sean $(\Omega, \mathcal{F}, \mu)$ un espacio de medida, $(\Xi, \mathcal{E})$ un espacio medible y $T:\Omega \to \Xi$ medible. Para toda función $g:\Xi \to \overline{\mathbb{R}}$ y todo $B\in\mathcal{E}$, se cumple que
+	\begin{equation*}
+		\int _Bg\ dT_*\mu=\int_{T\in B}(g\circ T)d\mu
+	\end{equation*} 
+	donde $T_*\mu$ es la medida \textit{pushforward} de $T$ con respecto a $\mu$,  
+	\begin{equation*}
+		T_*\mu(A):=\mu(T\in A)
+	\end{equation*}
+\end{lemma}
+\begin{proof}
+Basta probarlo para $B=\Xi$, pues para cualquier otro caso basta componer $g$ con la función característica $\chi_B$. Nótese que en la definición \ref{def:int} cualquier suma aproximadora del lado izquierdo es aproximadora del lado derecho y vice versa, pues por definición son de la forma
+\begin{equation*}
+	\sum_i g(\xi_i)T_*\mu(B_i) = \sum_i g\left(T(\omega_i)\right)\mu(T \in A)
+\end{equation*}
+por lo que tomando supremo, ambas integrales son siempre iguales.
+\end{proof}
+
+Las herramientas de teoría de la medida que acabamos de dar permiten definir de manera formal la probabilidad condicional.
+
+\begin{definition}
+Sean $(\Omega, \mathcal{F}, \mu)$ un espacio de medida, $f$ una función no negativa en $\Omega$  y $\nu$ la medida definida por $d\nu = fd\mu$. Si $T:\Omega \to (\Xi, \mathcal{E})$ es una función medible, la  \textit{esperanza condicional de $f$ dado que $T=\xi$} es la función $g$ tal que para todo $B\in\mathcal{E}$,
+
+\begin{equation*}
+	T_*\nu(B) = \int_B gdT_*\mu
+\end{equation*}
+
+Cuando $f=\chi_A$ para algún conjunto $A\in\mathcal{F}$, decimos $g$ llama \textit{probabilidad condicional de $A$}.
+\end{definition}
+
+En general se usa la notación $g(\xi) = f\left(\omega \mid T=\xi\right)$ porque si escribimos la ecuación completa tenemos que para todo $B\in\mathcal{E}$
+
+\begin{equation*}
+	\int_{T\in B} f(\omega)\mu(d\omega)
+	= \int _B f(\omega \mid T=\xi)T_*\mu(d\xi)
+\end{equation*}
+
+y para el caso de $f=\chi_A$
+
+\begin{equation*}
+\mu\left(A\cap T\in B\right) = 
+	\int _B p(A \mid T=\xi)T_*\mu(d\xi) 	
+\end{equation*}
+
+que es exactamente la ecuación de probabilidad condicional como se define en cálculo de probabilidades.
 \end{document}
