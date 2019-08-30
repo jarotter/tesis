@@ -255,8 +255,27 @@ donde
 S(E) = \int_E \frac{p(x)\; q(\cdot \mid T=T(x))}{p\left(\cdot \mid T=T(x)\right)}\lambda(dx)
 \end{equation*}
 
-Finalmente, basta notar que $-g\log g$ es una función convexa que $S$-integra a $1$, por lo que basta replicar el argumento de la proposición \ref{prop:gibbs}
+Finalmente, como $-g\log g$ es una función convexa que $S$-integra a $1$ (sustituyendo g en la integral dos líneas arriba se cancelan términos), basta replicar el argumento de la proposición \ref{prop:gibbs}.
 \end{proof}
+
+Este resultado es conceptualmente fuerte. Reescribiendo la ecuación $\eqref{eq:suf}$ como 
+\begin{equation*}
+	\frac{q(x)}{q(x\mid T(x))} = \frac{p(x)}{p(x\mid T(x))}
+\end{equation*}
+
+se nota que la densidad de $x$ condicionada a $T(x)$ es la misma bajo ambas hipótesis. Decimos en este caso que $T$ es \textit{suficiente} para la discriminación. Las estadísticas suficientes se caracterizan entonces por no reducir la información, definición mucho más intuitiva. Finalmente, de este resultado y el lema 2 de \cite{halmos1949} se desprende el siguiente corolario.
+
+\begin{corollary}
+	Si $T$ es no singular, $\kl(Q \mmid P) = \kl(T_*Q \mmid T_*P)$. 
+\end{corollary}
+
+Estos resultados ilustran la utilidad de la inferencia variacional. Aprovechando los métodos aleatorios para optimización a gran escala podemos minimizar una función entre medidas de probabilidad
+\begin{enumerate}[label=\roman*.]
+	\item Convexa
+	\item No-negativa con mínimo en la igualdad casi dondequiera
+	\item Invariante ante reparametrizaciones
+	\item Invariante ante estadísticas suficientes
+\end{enumerate}
 
 \section{ADVI: inferencia variacional por diferenciación automática}
 ADVI.
