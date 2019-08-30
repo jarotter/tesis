@@ -1,9 +1,6 @@
 # Tesis
 
-Recientemente, la atención popular en el aprendizaje de máquina se ha enfocado
-en el *deep learning*, (redes neuronales profundas que se han probado
-exitosas en reconocimiento de imágenes y análisis de texto) y en métodos
-para grandes volúmenes de datos. Sin embargo, casi todos los algoritmos de
+Casi todos los algoritmos de
 aprendizaje modernos utilizan técnicas de optimización  que dificultan
 cuantificar la incertidumbre. Encontrar equivalentes bayesianos es difícil,
 pues incluso los modelos más clásicos son difíciles de escalar a la complejidad
