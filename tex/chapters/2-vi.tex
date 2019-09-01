@@ -259,6 +259,7 @@ Finalmente, como $-g\log g$ es una función convexa que $S$-integra a $1$ (susti
 \end{proof}
 
 Este resultado es conceptualmente fuerte. Reescribiendo la ecuación $\eqref{eq:suf}$ como 
+
 \begin{equation*}
 	\frac{q(x)}{q(x\mid T(x))} = \frac{p(x)}{p(x\mid T(x))}
 \end{equation*}
@@ -271,12 +272,15 @@ se nota que la densidad de $x$ condicionada a $T(x)$ es la misma bajo ambas hip�
 
 Estos resultados ilustran la utilidad de la inferencia variacional. Aprovechando los métodos aleatorios para optimización a gran escala podemos minimizar una función entre medidas de probabilidad
 \begin{enumerate}[label=\roman*.]
-	\item Convexa
+	\item Convexa (hay teoría robusta para su optimización)
 	\item No-negativa con mínimo en la igualdad casi dondequiera
-	\item Invariante ante reparametrizaciones
+	\item Invariante ante reparametrizaciones (que muchas veces facilitan la interpretabilidad o las propiedades analíticas de la posterior)
 	\item Invariante ante estadísticas suficientes
 \end{enumerate}
 
-\section{ADVI: inferencia variacional por diferenciación automática}
-ADVI.
+\section{ADVI}
+Antes de complicar la elección de la familia $\mathcal{Q}$ con métodos no paramétricos, mostraremos un algoritmo publicado por Kucukelbir, Tran \textit{et. al.} \cite{advi}: inferencia variacional con diferenciación automática (ADVI por sus siglas en inglés). 
+
+ Supongamos que interesa modelar una variable aleatoria $X$ con densidad de probabilidad en una familia paramétrica ndexada por $\theta \in \Theta$. 
+
 \end{document}
