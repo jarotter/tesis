@@ -2,20 +2,25 @@
 \begin{document}
 
 \chapter{Inferencia variacional}
-La inferencia variacional busca aproximar una medida de probabilidad $P$ con la $Q\in\mathcal{Q}$ que más se le parezca en cierto sentido. Formalmente, se elige la solución a la ecuación \eqref{eqn:vi} que reescribimos aquí
+La inferencia variacional busca aproximar una medida de probabilidad $P$ con la
+$Q\in\mathcal{Q}$ que más se le parezca en cierto sentido. Formalmente, se elige
+la solución a la ecuación \eqref{eqn:vi} que reescribimos aquí
 
 \begin{equation*}
 	Q^* = \argmin_{Q \in \mathcal{Q}} \kl(Q\mmid P)
 \end{equation*}
 
-Para estudiar con detenimiento la función objetivo de la inferencia variacional, la construimos a partir de teoría de decisión con la doble intención de profundizar en la inferencia variacional y en la teoría bayesiana. 
+Para estudiar con detenimiento la función objetivo de la inferencia variacional,
+la construimos a partir de teoría de decisión con la doble intención de
+profundizar en la inferencia variacional y en la teoría bayesiana. 
 
 % ----------------------------------------------
 % ------------ TEORÍA DE DECISIÓN --------------
 % ----------------------------------------------
 \section{Teoría de decisión}
 \begin{definition}
-	Un \textit{problema de decisión} es una tupla $(\Omega, \mathcal{C}, \mathcal{D}, \preceq)$ donde
+	Un \textit{problema de decisión} es una tupla $(\Omega, \mathcal{C},
+	\mathcal{D}, \preceq)$ donde
 	\begin{itemize}
 		\item $\Omega$ es un $\sigma$-álgebra de eventos relevantes $\omega$
 		\item $\mathcal{C}$ es un conjunto de consecuencias $c$
@@ -24,83 +29,146 @@ Para estudiar con detenimiento la función objetivo de la inferencia variacional
 	\end{itemize}
 \end{definition}
 	
-Esta definición intenta formalizar la experiencia de un individuo o grupo (a quien llamaremos tomadora de decisiones) que debe elegir una opción de $\mathcal{D}$ en contexto de incertidumbre. Ella tiene control sobre la decisión que toma, pero una vez elegida $d$ puede ocurrir cualquiera de los eventos $\omega$, y la combinación trae como consecuencia a $c$. La teoría bayesiana postula una serie de axiomas para resolver problemas de decisión sin caer en errores sistemáticos. Para una construcción detallada el lector puede referirse a \cite{bernardo}, pero las principales consecuencias que derivan de ellos son
+Esta definición intenta formalizar la experiencia de un individuo o grupo (a
+quien llamaremos tomadora de decisiones) que debe elegir una opción de
+$\mathcal{D}$ en contexto de incertidumbre. Ella tiene control sobre la decisión
+que toma, pero una vez elegida $d$ puede ocurrir cualquiera de los eventos
+$\omega$, y la combinación trae como consecuencia a $c$. La teoría bayesiana
+postula una serie de axiomas para resolver problemas de decisión sin caer en
+errores sistemáticos. Para una construcción detallada el lector puede referirse
+a \cite{bernardo}, pero las principales consecuencias que derivan de ellos son
+
 \begin{enumerate}[label=\roman*]
-	\item toda incertidumbre sobre $\Omega$ puede extraerse de $\prec$ y cuantificarse en una distribución de probabilidad $p(\omega)$
-	\item toda preferencia debe cuantificarse en una \textit{función de utilidad} \\  $u: \mathcal{D}\times\Omega \to \mathbb{R}$  que captura la utilidad de haber tomado la decisión $d$ dado que ocurrió el evento   $\omega$ y
-	\item la solución al problema de decisión consistente con los axiomas de coherencia es elegir la decisión que maximice la utilidad esperada.
+	\item toda incertidumbre sobre $\Omega$ puede extraerse de $\prec$ y
+	cuantificarse en una distribución de probabilidad $p(\omega)$
+	\item toda preferencia debe cuantificarse en una \textit{función de
+	utilidad} \\  $u: \mathcal{D}\times\Omega \to \mathbb{R}$  que captura la
+	utilidad de haber tomado la decisión $d$ dado que ocurrió el evento
+	$\omega$ y
+	\item la solución al problema de decisión consistente con los axiomas de
+	coherencia es elegir la decisión que maximice la utilidad esperada.
 	\item la manera en que la tomadora de decisiones debe actualizar sus creencias sobre $\omega$, dado que sucedió un evento $\delta$, es usando el teorema de Bayes \eqref{eqn:bayes-thm}
 		\begin{equation*}
 		p(\omega\mid\delta) = \frac{p(\delta\mid\omega)p(\omega)}{p(\delta)}
 		\end{equation*}
-
 \end{enumerate}
 
 \begin{definition}
 	La \textit{solución bayesiana} a un problema de decisión es 
 	\begin{equation}
-	d^* = \argmax_{d \in\mathcal{D}} \ \mathbb{E}_{\omega\sim p}\left[u(d, \omega)\right]
+	d^* = \argmax_{d \in\mathcal{D}} \ 
+	\mathbb{E}_{\omega\sim p}\left[u(d, \omega)\right]
 	\end{equation}
 \end{definition}
 
-La notación anterior es un poco abstracta, pero en el caso de datos $x$ generados por un modelo de probabilidad $p(x\mid\theta)$, si inicialmente la tomadora de decisiones cuantifica su incertidumbre sobre $\theta$ con $p(\theta)$, la manera de actualizar se escribe en la familiar forma
+La notación anterior es un poco abstracta, pero en el caso de datos $x$
+generados por un modelo de probabilidad $p(x\mid\theta)$, si inicialmente la
+tomadora de decisiones cuantifica su incertidumbre sobre $\theta$ con
+$p(\theta)$, la manera de actualizar se escribe en la familiar forma
 
 \begin{equation*}
 	p(\theta | x ) 	\propto p(x|\theta)p(\theta).
 \end{equation*}
 
-En \cite{bernardo} se muestra que los problemas de estimación puntual, estimación por regiones y contraste de hipótesis pueden plantearse como problemas de decisión, tanto en contextos de inferencia pura como de pronóstico. Esta absoluta generalidad es importante, pues todo problema estadístico puede resolverse con el mismo camino: basta elegir distribuciones iniciales, una utilidad y maximizar.
+En \cite{bernardo} se muestra que los problemas de estimación puntual,
+estimación por regiones y contraste de hipótesis pueden plantearse como
+problemas de decisión, tanto en contextos de inferencia pura como de pronóstico.
+Esta absoluta generalidad es importante, pues todo problema estadístico puede
+resolverse con el mismo camino: basta elegir distribuciones iniciales, una
+utilidad y maximizar.
 
-Ahora consideraremos un problema de decisión particular que aunque suene un poco artificial, es de hecho la definición operativa\footnote{Que pueda utilizarse en el mundo real.} que Bruno De Finetti usa para probabilidad en \cite{definetti2008}.  Supongamos que interesa cuantificar en una medida de probabilidad la incertidumbre que una tomadora de decisiones tiene acerca de un evento en el que debe ocurrir alguna posibilidad  $\omega \in \Omega$. Ella debe reportar una distribución para las $\omega$, pero nada la obliga a revelar sus verdaderas creencias. Si una vez ocurrido el evento de interés se le recompensará con una cantidad $u(\omega,p(\omega))$ que depende del evento que haya ocurrido y de las probabilidades que había expresado; ¿podrá la función $u$  asegurar que ella reporte sus verdaderas creencias?  Este problema se lo planteó Glenn Brier en 1959 para encontrar una manera de evaluar las predicciones meteorológicas, y la solución que le dio sigue recibiendo su nombre. 
+Ahora consideraremos un problema de decisión particular que aunque suene un poco
+artificial, es de hecho la definición operativa\footnote{Que pueda utilizarse en
+el mundo real.} que Bruno De Finetti usa para probabilidad en
+\cite{definetti2008}.  Supongamos que interesa cuantificar en una medida de
+probabilidad la incertidumbre que una tomadora de decisiones tiene acerca de un
+evento en el que debe ocurrir alguna posibilidad  $\omega \in \Omega$. Ella debe
+reportar una distribución para las $\omega$, pero nada la obliga a revelar sus
+verdaderas creencias. Si una vez ocurrido el evento de interés se le
+recompensará con una cantidad $u(\omega,p(\omega))$ que depende del evento que
+haya ocurrido y de las probabilidades que había expresado; ¿podrá la función $u$
+asegurar que ella reporte sus verdaderas creencias?  Este problema se lo planteó
+Glenn Brier en 1959 para encontrar una manera de evaluar las predicciones
+meteorológicas, y la solución que le dio sigue recibiendo su nombre. 
 
 \begin{definition}
-	Consideremos un problema de decisión donde el conjunto de decisiones $\mathcal{Q}$ es el de distribuciones de probabilidad sobre ciertos eventos $\Omega$. A la utilidad $u: \mathcal{Q}\times\Omega \to \mathbb{R}$ se le llama \textit{función score}.
+	Consideremos un problema de decisión donde el conjunto de decisiones
+	$\mathcal{Q}$ es el de distribuciones de probabilidad sobre ciertos eventos
+	$\Omega$. A la utilidad $u: \mathcal{Q}\times\Omega \to \mathbb{R}$ se le
+	llama \textit{función score}.
 \end{definition}
 
-Si la tomadora de decisiones siguiera los axiomas de coherencia, su respuesta sería reportar la distribución que maximice la utilidad esperada. Sin embargo, ella tiene una verdadera distribución de creencias, que denotaremos $p$. 
+Si la tomadora de decisiones siguiera los axiomas de coherencia, su respuesta
+sería reportar la distribución que maximice la utilidad esperada. Sin embargo,
+ella tiene una verdadera distribución de creencias, que denotaremos $p$. 
 
 \begin{definition}
 	Una función score $u$ es \textit{propia} si
 	\begin{equation*}
-		\sup_{Q \in \mathcal{Q}} \mathbb{E}_{\omega\sim p}\left[u(Q,\omega)\right] = \mathbb{E}_{\omega\sim p}\left[u(p,\omega)\right]
+		\sup_{Q \in \mathcal{Q}} 
+		\mathbb{E}_{\omega\sim p}\left[u(Q,\omega)\right] = 
+		\mathbb{E}_{\omega\sim p}\left[u(p,\omega)\right]
 	\end{equation*}
 \end{definition}
 
-Es decir, si la tomadora de decisiones maximiza su utilidad esperada reportando sus verdaderas creeencias. Brier probó que la pérdida cuadrática (o \textit{score de Brier}) es una función score propia.
+Es decir, si la tomadora de decisiones maximiza su utilidad esperada reportando
+sus verdaderas creeencias. Brier probó que la pérdida cuadrática (o
+\textit{score de Brier}) es una función score propia.
 
-Otra característica que puede incorporarse a la función score del problema, y que Bernardo argumenta es lo que debería hacerse en el conocimiento científico, es sólo evaluar la respuesta en términos de la probabilidad que asigna al evento que sí ocurrió. Esto permite ignorar lo poco acertada que pudo haber sido la tomadora de decisiones en algo que no ocurrió y por tanto no hay forma \enquote{honesta} o \enquote{justa} de evaluar. Como ejemplo para concretar, si se está modelando la probabilidad de que uno de tres eventos (digamos $A, B, C$) suceda y al final sucede $A$, se quiere recompensar a la tomadora de decisiones utilizando solamente la probabilidad que asignó a $A$, sin importar cuánto haya asignado a $B$ y $C$. 
+Otra característica que puede incorporarse a la función score del problema, y
+que Bernardo argumenta es lo que debería hacerse en el conocimiento científico,
+es sólo evaluar la respuesta en términos de la probabilidad que asigna al evento
+que sí ocurrió. Esto permite ignorar lo poco acertada que pudo haber sido la
+tomadora de decisiones en algo que no ocurrió y por tanto no hay forma
+\enquote{honesta} o \enquote{justa} de evaluar. Como ejemplo para concretar, si
+se está modelando la probabilidad de que uno de tres eventos (digamos $A, B, C$)
+suceda y al final sucede $A$, se quiere recompensar a la tomadora de decisiones
+utilizando solamente la probabilidad que asignó a $A$, sin importar cuánto haya
+asignado a $B$ y $C$. 
 
 \begin{definition}
-	Una función score $u$ es \textit{local} si para cada $q \in \mathcal{Q}$ existen funciones $\{u_\omega: \omega\in\Omega\}$ tales que
+	Una función score $u$ es \textit{local} si para cada $q \in \mathcal{Q}$
+	existen funciones $\{u_\omega: \omega\in\Omega\}$ tales que
 	\begin{equation*}
 		u(q, \omega) = u_\omega(q)
 	\end{equation*}
 \end{definition}
 
-El siguiente teorema se prueba en \cite{bernardo} y caracteriza, bajo ciertas condiciones de regularidad, a las funciones score propias.
+El siguiente teorema se prueba en \cite{bernardo} y caracteriza, bajo ciertas
+condiciones de regularidad, a las funciones score propias.
 
 \begin{prop}
-	Si $u:\mathcal{Q}\times\Omega \to \mathbb{R}$ es una función score propia, local y continuamente diferenciable tal que $\mathbb{E}_{\omega \sim p}\left[u(q,\omega)\right] < \infty$ para cada $q \in \mathcal{Q}$, entonces u debe ser de la forma
+	Si $u:\mathcal{Q}\times\Omega \to \mathbb{R}$ es una función score propia,
+	local y continuamente diferenciable tal que $\mathbb{E}_{\omega \sim
+	p}\left[u(q,\omega)\right] < \infty$ para cada $q \in \mathcal{Q}$, entonces
+	u debe ser de la forma
 	\begin{equation*}
 		u(q, \omega) = a\log q(\omega)+b_\omega
 	\end{equation*}
 \end{prop} 
 
 \begin{definition}
-A una función score que satisfaga las hipótesis de la proposición 2.1 se le llama \textit{score logarítmica}.	
+A una función score que satisfaga las hipótesis de la proposición 2.1 se le
+llama \textit{score logarítmica}.	
 \end{definition}
 
-Ahora bien, la tomadora de decisiones puede encontrarse en una situación en la que, por dificultad computacional o cualquier otra razón no pueda reportar $p$, sino solamente una aproximación $q$. En este caso, la diferencia en utilidad esperada de la tomadora de decisiones es 
+Ahora bien, la tomadora de decisiones puede encontrarse en una situación en la
+que, por dificultad computacional o cualquier otra razón no pueda reportar $p$,
+sino solamente una aproximación $q$. En este caso, la diferencia en utilidad
+esperada de la tomadora de decisiones es 
 
 \begin{align*}
-	\Delta &= \mathbb{E}_{\omega \sim p}\left[u(p, \omega)\right] - \mathbb{E}_{\omega\sim p}\left[u(q, \omega)\right]  \\
+	\Delta &= \mathbb{E}_{\omega \sim p}\left[u(p, \omega)\right] - 
+		\mathbb{E}_{\omega\sim p}\left[u(q, \omega)\right]  \\
 	&= \mathbb{E}_{\omega \sim p}\left[u(p, \omega) - u(q, \omega)\right] \\
-	&= \mathbb{E}_{\omega \sim p}\left[(a\log p(\omega) - b_\omega) - (a\log q(\omega) - b_\omega) \right] \\
+	&= \mathbb{E}_{\omega \sim p}\left[(a\log p(\omega) - b_\omega) - 
+		(a\log q(\omega) - b_\omega) \right] \\
 	&= a\mathbb{E}_{\omega \sim p}\left[\log\frac{p(\omega)}{q(\omega)}\right]
 \end{align*}
 
 \begin{definition}\label{def:kl-fea}
-	Cuando $a=1$, la expresión de arriba se llama \textit{divergencia de Kullback-Leibler} a $p$ desde $q$. Es decir, 
+	Cuando $a=1$, la expresión de arriba se llama \textit{divergencia de
+	Kullback-Leibler} a $p$ desde $q$. Es decir, 
 	\begin{equation}\label{eqn:kl-fea}
 	\kl(p \mmid q) = \mathbb{E}_{\omega \sim p}\left[\log\frac{p(\omega)}{q(\omega)}\right]	
 	\end{equation}
@@ -110,12 +178,14 @@ Ahora bien, la tomadora de decisiones puede encontrarse en una situación en la 
 % ---------- LA DIVERGENCIA DE KL --------------
 % ----------------------------------------------
 \section{La divergencia de Kullback-Leibler}
-Hay una construcción de la divergencia de Kullback-Leibler  más ilustrativa para su uso en inferencia variacional. Consideremos el problema de contrastar las hipótesis 
+Hay una construcción de la divergencia de Kullback-Leibler  más ilustrativa para
+su uso en inferencia variacional. Consideremos el problema de contrastar las
+hipótesis 
 \begin{equation*}
-H_0: X \sim Q \quad vs.\quad H_1: X \sim P
+	H_0: X \sim Q \quad vs.\quad H_1: X \sim P
 \end{equation*}
-
-para un par de distribuciones de probabilidad $Q, P$. Por el teorema de Bayes, si se observa que $X=x$, tenemos que
+para un par de distribuciones de probabilidad $Q, P$. Por el teorema de Bayes,
+si se observa que $X=x$, tenemos que
 \begin{equation*}
 \log\frac{P(H_0\mid x)}{P(H_1\mid x)} = 
 	\log\frac{q(x)P(H_0)}{p(x)P(H_1)} =
@@ -124,55 +194,71 @@ para un par de distribuciones de probabilidad $Q, P$. Por el teorema de Bayes, s
 
 Donde $p, q$ son f.d.p.g para $X$ bajo $H_0, H_1$ respectivamente. Despejando,
 \begin{equation*}
-	\log\frac{q(x)}{p(x)} = \log\frac{P(H_0\mid x)}{P(H_1\mid x)} - \log\frac{P(H_0)}{P(H_1)}
+	\log\frac{q(x)}{p(x)} = \log\frac{P(H_0\mid x)}{P(H_1\mid x)} - 
+	\log\frac{P(H_0)}{P(H_1)}
 \end{equation*}
 
-El lado derecho de la ecuación anterior es la diferencia de los log-momios a favor de $H_0$ y en contra de $H_1$ antes y después de observar $X=x$. Kullback llama a esta cantidad \textit{información de discriminación a favor de $H_0$ y en contra de $H_1$ contenida en $x$}. Integrando sobre todo el espacio muestral con respecto a a $Q$ obtenemos 
-
+El lado derecho de la ecuación anterior es la diferencia de los log-momios a
+favor de $H_0$ y en contra de $H_1$ antes y después de observar $X=x$. Kullback
+llama a esta cantidad \textit{información de discriminación a favor de $H_0$ y
+en contra de $H_1$ contenida en $x$}. Integrando sobre todo el espacio muestral
+con respecto a a $Q$ obtenemos 
 \begin{equation}\label{eq:kl-ci}
 \int\log\frac{q}{p}dQ = \int_\mathcal{X}\log\frac{P(H_0\mid x)}{P(H_1\mid x)}dP(x)-\log\frac{P(H_0)}{P(H_1)}
 \end{equation}
 
-El lado izquierdo de esta ecuación coincide con la definición \ref{def:kl-fea} (con los argumentos volteados), y el derecho permite interpretar esta cantidad como la \textit{información media a favor de $H_0$ y en contra de $H_1$ por observación de $Q$}, que de nuevo es una diferencia en log-momios, pero ahora una diferencia media. En la expresión \eqref{eq:kl-ci} también podemos ver que $\kl(Q\mmid P)$ depende de $Q$ y $P$ pero no de $q$ y $p$. A continuación formalizamos esta idea dando una definición más general de $\kl$ y algunas de sus propiedades.
+El lado izquierdo de esta ecuación coincide con la definición \ref{def:kl-fea}
+(con los argumentos volteados), y el derecho permite interpretar esta cantidad
+como la \textit{información media a favor de $H_0$ y en contra de $H_1$ por
+observación de $Q$}, que de nuevo es una diferencia en log-momios, pero ahora
+una diferencia media. En la expresión \eqref{eq:kl-ci} también podemos ver que
+$\kl(Q\mmid P)$ depende de $Q$ y $P$ pero no de $q$ y $p$. A continuación
+formalizamos esta idea dando una definición más general de $\kl$ y algunas de
+sus propiedades.
 
 \begin{definition}\label{def:kl}
-Sea $(\mathfrak{X}, \mathcal{F})$ un espacio medible y $Q, P$, medidas de probabilidad en él tales que $P \ll Q$. La \textit{divergencia de Kullback-Leibler a $P$ desde $Q$} es la integral
-\begin{equation}\label{eqn:kl}
-	\kl(Q\mmid P)=\int\log\left(\frac{dQ}{dP}\right)dQ
-\end{equation}
-donde $\frac{dP}{dQ}$ es la derivada de Radon-Nikodym de $Q$ con respecto a $P$.
+	Sea $(\mathfrak{X}, \mathcal{F})$ un espacio medible y $Q, P$, medidas de
+	probabilidad en él tales que $P \ll Q$. La \textit{divergencia de
+	Kullback-Leibler a $P$ desde $Q$} es la integral
+	\begin{equation}\label{eqn:kl}
+		\kl(Q\mmid P)=\int\log\left(\frac{dQ}{dP}\right)dQ
+	\end{equation}
+	donde $\frac{dP}{dQ}$ es la derivada de Radon-Nikodym de $Q$ con respecto a $P$.
 \end{definition}
 
 Esta definición extiende a la \ref{def:kl-fea}, pues invirtiendo los argumentos,
 \begin{align*}
-\mathbb{E}_{\omega\sim p}\left[\log\frac{p(\omega)}{q(\omega)}\right] &= \int\log\frac{p}{q}dP \\
-&= \int\log\left(\frac{\frac{dP}{d\lambda}}{\frac{dQ}{d\lambda}}\right)dP \\
-&= \int\log\left(\frac{\frac{dP}{dQ}\frac{dQ}{d\lambda}}{\frac{dQ}{d\lambda}}\right)dP \\
-&= \int\log\left(\frac{dP}{dQ}\right)dP
+	\mathbb{E}_{\omega\sim p}\left[\log\frac{p(\omega)}{q(\omega)}\right] &= 
+	\int\log\frac{p}{q}dP \\
+	&= \int\log\left(\frac{\frac{dP}{d\lambda}}{\frac{dQ}{d\lambda}}\right)dP \\
+	&= \int\log\left(\frac{\frac{dP}{dQ}\frac{dQ}{d\lambda}}{\frac{dQ}{d\lambda}}\right)dP \\
+	&= \int\log\left(\frac{dP}{dQ}\right)dP
 \end{align*}
 
 \begin{prop}[Desigualdad de Gibbs]\label{prop:gibbs}
-$\kl(P\mmid Q)\geq 0$ para todas $P, Q$ con igualdad si y sólo si $P\equiv Q$.
+	$\kl(P\mmid Q)\geq 0$ para todas $P, Q$ con igualdad si y sólo si $P\equiv Q$.
 \end{prop}
 \begin{proof}$ $ \newline
-Como $\log$ es una función convexa, por la desigualdad de Jensen se cumple que
-\begin{align*}
-	-\kl(P\mmid Q) &= -\int\log\left(\frac{dP}{dQ}\right)dP \\
-		&= \int\log\left(\frac{dQ}{dP}\right)dP \\
-		&\leq \log\int\frac{dQ}{dP}dP \\
-		&\leq \log\int\frac{dQ}{d\lambda}d\lambda \\
-		&=\log1=0
-\end{align*}
-La igualdad se da cuando $\frac{dQ}{dP}=1$ casi dondequiera, que por el teorema de Radon-Nikodym implica $P\equiv Q$. 
+	Como $\log$ es una función convexa, por la desigualdad de Jensen se cumple que
+	\begin{align*}
+		-\kl(P\mmid Q) &= -\int\log\left(\frac{dP}{dQ}\right)dP \\
+			&= \int\log\left(\frac{dQ}{dP}\right)dP \\
+			&\leq \log\int\frac{dQ}{dP}dP \\
+			&\leq \log\int\frac{dQ}{d\lambda}d\lambda \\
+			&=\log1=0
+	\end{align*}
+	La igualdad se da cuando $\frac{dQ}{dP}=1$ casi dondequiera, que por el teorema
+	de Radon-Nikodym implica $P\equiv Q$. 
 \end{proof}
 
 \begin{prop}[Aditividad]\label{prop:kl-add}
-Sean $X, Y$ independientes y consideremos dos f.d.p.g conjuntas  para ellas: $p(x, y)=p_X(x)p_Y(y)$ y $q(x,y)=q_X(x)q_Y(y)$. Entonces, 
-\begin{equation*}
-\kl(Q\mmid P) = \kl(Q_X\mmid P_X) + \kl(Q_Y\mmid P_Y)
-\end{equation*}
+	La divergencia de Kullback-Leibler es aditiva para distribuciones 
+	independientes. Si $P(x, y)=P_X(x)P_Y(y)$ y $Q(x, y)=Q_X(x)Q_Y(y)$ 
+	 Entonces, 
+	\begin{equation*}
+		\kl(Q\mmid P) = \kl(Q_X\mmid P_X) + \kl(Q_Y\mmid P_Y)
+	\end{equation*}
 \end{prop}
-
 \begin{proof}$ $ \newline
 \begin{align*}
 	\kl(Q\mmid P) &= \int q\log\frac{q}{p}d\lambda \\
@@ -180,34 +266,51 @@ Sean $X, Y$ independientes y consideremos dos f.d.p.g conjuntas  para ellas: $p(
 	&= \int \left(q_X(x)q_Y(y)\log\frac{q_X(x)}{p_X(x)} + q_X(x)q_Y(y)\log\frac{q_Y(y)}{p_Y(y)}\right)\lambda(dx)\lambda(dy) \\
 	&= \kl(Q_X\mmid P_X) + \kl(Q_Y\mmid P_Y)
 \end{align*}
-donde la última igualdad se debe a que $q_X$ y $q_Y$ integran a 1 con respecto a la medida de Lebesgue por ser densidades de probabilidad.
+donde la última igualdad se debe a que $q_X$ y $q_Y$ integran a 1 con respecto a
+la medida de Lebesgue por ser densidades de probabilidad.
 \end{proof}
 
-Estas dos propiedades motivan el término \textit{información} que Kullback utilizaba. En una muestra tamaño $n$ de observaciones independientes hay en la media $n$ veces más información que en una sola observación, y la información nunca disminuye. Para efectos variacionales, estas propiedades también son importantes porque implican que $\kl$ es convexa, en particular en su primer argumento.
+Estas dos propiedades motivan el término \textit{información} que Kullback
+utilizaba. En una muestra tamaño $n$ de observaciones independientes hay en la
+media $n$ veces más información que en una sola observación, y la información
+nunca disminuye. Para efectos variacionales, estas propiedades también son
+importantes porque implican que $\kl$ es convexa, en particular en su primer
+argumento.
 
 \begin{theorem}
-El problema de inferencia variacional \eqref{eqn:vi} tiene solución única. 
+	El problema de inferencia variacional \eqref{eqn:vi} tiene solución única. 
 \end{theorem}
 \begin{proof} $ $ \newline
-Se sigue de las proposiciones \ref{prop:gibbs} y \ref{prop:kl-add} que $\kl(\cdot \mmid P)$ es convexo para toda $P$.
+	Se sigue de las proposiciones \ref{prop:gibbs} y \ref{prop:kl-add} que
+	$\kl(\cdot \mmid P)$ es convexo para toda $P$.
 \end{proof}
 
+Existencia y unicidad de la solución es maravilloso para un problema de
+optimización que ya damos por bueno, pero aún no hemos dado más que razones
+intuitivas para elegir $\kl$ como función objetivo. El primero en utilizarla
+para comparar distribuciones de probabilidad fue Harold Jeffreys, que
+curiosamente se planteaba el problema de maximizar (en vez de minimizar) una
+medida discrepancia entre medidas de probabilidad sin que dependiera de la
+parametrización \cite{jeffreys1946}. 
 
-Existencia y unicidad de la solución es maravilloso para un problema de optimización que ya damos por bueno, pero aún no hemos dado más que razones intuitivas para elegir $\kl$ como función objetivo. El primero en utilizarla para comparar distribuciones de probabilidad fue Harold Jeffreys, que curiosamente se planteaba el problema de maximizar (en vez de minimizar) una medida discrepancia entre medidas de probabilidad sin que dependiera de la parametrización \cite{jeffreys1946}. 
-
-Estudiaremos las versiones más fuertes de estas propiedades de invarianza para estar satisfechos con la formulación de la inferencia variacional. 
+Estudiaremos las versiones más fuertes de estas propiedades de invarianza para
+estar satisfechos con la formulación de la inferencia variacional. 
 
 \begin{definition}
-	Sean $(\mathcal{X}, \mathcal{F}, P)$ un espacio de probabilidad y $(\mathcal{Y}, \mathcal{E})$ un espacio medible. Una \textit{estadística} es una función medible $T:\mathcal{X} \to \mathcal{Y}$.
+	Sean $(\mathcal{X}, \mathcal{F}, P)$ un espacio de probabilidad y
+	$(\mathcal{Y}, \mathcal{E})$ un espacio medible. Una \textit{estadística} es
+	una función medible $T:\mathcal{X} \to \mathcal{Y}$.
 \end{definition}
 
-
-\begin{theorem}[La desigualdad de procesamiento de información]
-	Sean $(\mathcal{X}, \mathcal{F}), (\mathcal{Y}, \mathcal{E})$ espacios medibles, $T: \mathcal{X} \to \mathcal{Y}$ una estadística y $P, Q$ medidas de probabilidad en $\mathcal{X}$. Entonces
+\begin{theorem}[La desigualdad de procesamiento de información] 
+	Sean $(\mathcal{X}, \mathcal{F}), (\mathcal{Y}, \mathcal{E})$ espacios medibles,
+	$T: \mathcal{X} \to \mathcal{Y}$ una estadística y $P, Q$ medidas de
+	probabilidad en $\mathcal{X}$. Entonces
 	\begin{equation}\label{eq:info-pr}
 		\kl(Q \mmid P) \geq \kl(T_*Q \mmid T_*P)
 	\end{equation}
-	donde $T_*\mu(A)=\mu\left(T \in A\right)$ es la medida pushforward de $\mu$ bajo $T$. Más aún, la igualdad se da si y sólo si 
+	donde $T_*\mu(A)=\mu\left(T \in A\right)$ es la medida pushforward de $\mu$
+	bajo $T$. Más aún, la igualdad se da si y sólo si 
 	\begin{equation}\label{eq:suf}
 	\frac{q(x)}{p(x)}=
 		\frac{q\left(x\mid T=y\right)}
@@ -217,70 +320,92 @@ Estudiaremos las versiones más fuertes de estas propiedades de invarianza para 
 \end{theorem}
 
 \begin{proof} $\ $ \\
-Por la regla de la cadena, 
-\begin{equation*}
-	\frac{dT_*Q}{dT_*P}=\frac{\frac{dT_*Q}{dT_*\lambda}}{\frac{dT_*Q}{dT_*\lambda}}
-	:= \frac{q(\cdot\mid T)}{p(\cdot\mid T)}
-\end{equation*}
-Usando el lema \ref{lemma:trans-int} y la observación inmediata anterior,
-\begin{align*}
-\kl(T_*Q\mmid T_*P) &= \int_\mathcal{Y}\log\left(\frac{dT_*Q}{dT_*P}\right)dT_*Q \\
-&= \int_\mathcal{Y} \log\left(\frac{q(\cdot\mid T=y)}{p(\cdot\mid T=y)}\right)T_*Q(dy) \\
-&= \int_\mathcal{X}\log\left(\frac{q\left(\cdot\mid T=T(x)\right)}{p\left(\cdot\mid T=T(x)\right)}\right)Q(dx) \\
-\end{align*}
-Por lo que 
+	Por la regla de la cadena, 
+	\begin{equation*}
+		\frac{dT_*Q}{dT_*P}=\frac{\frac{dT_*Q}{dT_*\lambda}}{\frac{dT_*Q}{dT_*\lambda}}
+		:= \frac{q(\cdot\mid T)}{p(\cdot\mid T)}
+	\end{equation*}
+	Usando el lema \ref{lemma:trans-int} y la observación inmediata anterior,
+	\begin{align*}
+		\kl(T_*Q\mmid T_*P) &= \int_\mathcal{Y}\log\left(
+			\frac{dT_*Q}{dT_*P}\right)dT_*Q \\
+		&= \int_\mathcal{Y} \log\left(
+			\frac{q(\cdot\mid T=y)}{p(\cdot\mid T=y)}\right)T_*Q(dy) \\
+		&= \int_\mathcal{X}\log\left(\frac{q\left(
+			\cdot\mid T=T(x)\right)}{p\left(\cdot\mid T=T(x)\right)}\right)Q(dx) \\
+	\end{align*}
+	Por lo que 
+	\begin{equation}\label{eq:medio-kl}
+		\kl(T_*Q\mmid T_*P)-\kl(Q\mmid P)
+		=\int_\mathcal{X} \log\left(
+		\frac{q(x)p\left(\cdot\mid T= T(x)\right)}{p(x)q\left(\cdot\mid T=T(x)\right)}
+		\right)q(x)\lambda(dx) \\
+	\end{equation}
+	y definiendo
+	\begin{equation*}
+		g(x)=\frac{q(x)p\left(\cdot\mid T=T(x)\right)}
+		{p(x)q\left(\cdot\mid T=T(x)\right)}
+	\end{equation*}
 
-\begin{equation}\label{eq:medio-kl}
-\kl(T_*Q\mmid T_*P)-\kl(Q\mmid P)
-	=\int_\mathcal{X} \log\left(
-	\frac{q(x)p\left(\cdot\mid T= T(x)\right)}{p(x)q\left(\cdot\mid T=T(x)\right)}
-	\right)
-	q(x)\lambda(dx) \\
-\end{equation}
-y definiendo
+	Podemos reescribir \eqref{eq:medio-kl} como
+	\begin{equation*}
+		\int_\mathcal{X}g(x)\log g(x)
+		\frac{p(x)q( \cdot \mid T=T(x))}{p( \cdot\mid T=T(x))}\lambda(dx)
+		= \int g \log g dS
+	\end{equation*}
 
-\begin{equation*}
-g(x)=\frac{q(x)p\left(\cdot\mid T=T(x)\right)}{p(x)q\left(\cdot\mid T=T(x)\right)}
-\end{equation*}
+	donde 
+	\begin{equation*}
+	S(E) = \int_E \frac{p(x)\; 
+	q(\cdot \mid T=T(x))}{p\left(\cdot \mid T=T(x)\right)}\lambda(dx)
+	\end{equation*}
 
-Podemos reescribir \eqref{eq:medio-kl} como
-
-\begin{equation*}
-\int_\mathcal{X}g(x)\log g(x)\frac{p(x)q( \cdot \mid T=T(x))}{p( \cdot\mid T=T(x))}\lambda(dx)
-= \int g \log g dS
-\end{equation*}
-
-donde 
-\begin{equation*}
-S(E) = \int_E \frac{p(x)\; q(\cdot \mid T=T(x))}{p\left(\cdot \mid T=T(x)\right)}\lambda(dx)
-\end{equation*}
-
-Finalmente, como $-g\log g$ es una función convexa que $S$-integra a $1$ (sustituyendo g en la integral dos líneas arriba se cancelan términos), basta replicar el argumento de la proposición \ref{prop:gibbs}.
+	Finalmente, como $-g\log g$ es una función convexa que $S$-integra a $1$
+	(sustituyendo g en la integral dos líneas arriba se cancelan términos), basta
+	replicar el argumento de la proposición \ref{prop:gibbs}.
 \end{proof}
 
-Este resultado es conceptualmente fuerte. Reescribiendo la ecuación $\eqref{eq:suf}$ como 
-
+Este resultado es conceptualmente fuerte. Reescribiendo la ecuación
+$\eqref{eq:suf}$ como 
 \begin{equation*}
 	\frac{q(x)}{q(x\mid T(x))} = \frac{p(x)}{p(x\mid T(x))}
 \end{equation*}
 
-se nota que la densidad de $x$ condicionada a $T(x)$ es la misma bajo ambas hipótesis. Decimos en este caso que $T$ es \textit{suficiente} para la discriminación. Las estadísticas suficientes se caracterizan entonces por no reducir la información, definición mucho más intuitiva. Finalmente, de este resultado y el lema 2 de \cite{halmos1949} se desprende el siguiente corolario.
+se nota que la densidad de $x$ condicionada a $T(x)$ es la misma bajo ambas
+hipótesis. Decimos en este caso que $T$ es \textit{suficiente} para la
+discriminación. Las estadísticas suficientes se caracterizan entonces por no
+reducir la información, definición mucho más intuitiva.
 
-\begin{corollary}
+El siguiente corolario es particularmente útil en la construcción de SVGD
+que haremos en el capítulo 4.
+\begin{corollary}\label{cor:invar-invert}
 	Si $T$ es no singular, $\kl(Q \mmid P) = \kl(T_*Q \mmid T_*P)$. 
 \end{corollary}
+\begin{proof}
+	\begin{equation*}
+		\kl(Q \mmid P) \geq \kl(T_*Q \mmid T_*P) \geq 
+		\kl(T^{-1}T_*Q \mmid T^{-1}T_*P) = \kl(Q\mmid P)
+	\end{equation*}
+\end{proof}
 
-Estos resultados ilustran la utilidad de la inferencia variacional. Aprovechando los métodos aleatorios para optimización a gran escala podemos minimizar una función entre medidas de probabilidad
+Estos resultados ilustran la utilidad de la inferencia variacional. Aprovechando
+los métodos aleatorios para optimización a gran escala podemos minimizar una
+función entre medidas de probabilidad
 \begin{enumerate}[label=\roman*.]
 	\item Convexa (hay teoría robusta para su optimización)
 	\item No-negativa con mínimo en la igualdad casi dondequiera
-	\item Invariante ante reparametrizaciones (que muchas veces facilitan la interpretabilidad o las propiedades analíticas de la posterior)
+	\item Invariante ante reparametrizaciones (que muchas veces facilitan la
+	interpretabilidad o las propiedades analíticas de la posterior)
 	\item Invariante ante estadísticas suficientes
 \end{enumerate}
 
 \section{ADVI}\label{sec:advi}
-Antes de complicar la elección de la familia $\mathcal{Q}$ con métodos no paramétricos, mostraremos un algoritmo publicado por Kucukelbir, Tran \textit{et. al.} \cite{advi}: inferencia variacional con diferenciación automática (ADVI por sus siglas en inglés). 
+Antes de complicar la elección de la familia $\mathcal{Q}$ con métodos no
+paramétricos, mostraremos un algoritmo publicado por Kucukelbir, Tran
+\textit{et. al.} \cite{advi}: inferencia variacional con diferenciación
+automática (ADVI por sus siglas en inglés). 
 
- Supongamos que interesa modelar una variable aleatoria $X$ con densidad de probabilidad en una familia paramétrica ndexada por $\theta \in \Theta$. 
+ Supongamos que interesa modelar una variable aleatoria $X$ con densidad de
+ probabilidad en una familia paramétrica ndexada por $\theta \in \Theta$. 
 
 \end{document}
