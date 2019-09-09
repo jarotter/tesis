@@ -1,0 +1,57 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\chapter{Stein Variational Gradient Descent}
+Usando la teoría de RKHS desarrollada en el capítulo 3, en este capítulo
+construimos un algoritmo no paramétrico para inferencia variacional automática.
+La última pieza necesaria es un resultado en teoría de aproximación debido a
+Charles Stein.
+% ----------------------
+% ... STEIN'S METHOD ...
+% ----------------------
+\section{Del método de Stein a la discrepancia de Stein}
+
+% ----------------------
+% ........ SVGD ........
+% ----------------------
+\section{Stein Vartational gradient descent}
+En la sección \ref{sec:advi} introdujimos la idea de hacer inferencia
+variacional a través de transformaciones suaves. El algoritmo \eqref{algo:advi}
+\enquote{estandariza} el problema variacional completando el soporte
+$\mathcal{X}\subseteq{R}^d$ de la densidad de interés a $\mathbb{R}^d$ completo
+y después minimiza $\kl$ con familias de normales, una solución paramétrica.
+Este proceso utilliza una librería de transformaciones y sus jacobianos que el
+equipo de desarrollo de Stan mantiene\cite{advi}, pero en principio no se
+necesita salir de $\mathcal{X}$. La idea detrás de SVGD es partir de una
+distribución $Q_0$ en $\mathcal{X}$ y construir de manera iterativa y no
+paramétrica biyección suave $T: \mathcal{X} \to \mathcal{X}$ que minimice
+$\kl(T_*Q_0\mmid P)$. 
+
+En este capítulo usaremos la notación
+\begin{equation*}
+    q_T = \frac{dT_*Q}{d\lambda}
+\end{equation*}
+
+\begin{lemma}
+    Sea $X\sim Q$ un vector aleatorio en $\mathcal{X}$ y $T_\epsilon:
+    \mathcal{X} \to \mathcal{X}$ una biyección indexada por $\epsilon$ y
+    diferenciable con respecto a $x$ y $\epsilon$.
+    \begin{equation*}
+        \nabla_\epsilon \kl(T_*Q\mmid P)  = 
+        \mathbb{E}_{x\sim Q}\left[
+            s_p(T(x))'\nabla_\epsilon T(x) + 
+            \mathrm{traza}\left(\nabla_xT(x)\right)^{-1}\cdot
+            \nabla_\epsilon \nabla_x T(x)
+        \right] 
+    \end{equation*}
+    donde $s_p = \nabla\log p$.
+\end{lemma}
+\begin{proof} $ $ \newline
+    Usando el corolario \ref{cor:invar-invert}, 
+    \begin{align*}
+        \nabla_\epsilon\kl(T_*Q\mmid P) &= \kl(Q \mmid T^{-1}P) \\
+        &:= \nabla_\epsilon\int\log\frac{dQ}{dT^{-1}_*P}dQ \\
+        &= \int\nabla_\epsilon\log\frac{dQ}{dT^{-1}P}dQ
+    \end{align*}
+
+\end{proof}
+\end{document}
