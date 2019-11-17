@@ -1,8 +1,0 @@
-PWD /Users/jarotter/Documents/ITAM/tesis/tex/chapters
-INPUT /usr/local/texlive/2019/texmf.cnf
-INPUT /usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf
-INPUT /usr/local/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/jarotter/Documents/ITAM/tesis/tex/chapters/4-svgd.tex
-OUTPUT /Users/jarotter/Documents/ITAM/tesis/tex/chapters/4-svgd.log
-INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/subfiles/subfiles.cls
-INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/subfiles/subfiles.cls
