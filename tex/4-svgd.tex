@@ -1,57 +1,93 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
+
 \chapter{Stein Variational Gradient Descent}
-Usando la teoría de RKHS desarrollada en el capítulo 3, en este capítulo
-construimos un algoritmo no paramétrico para inferencia variacional automática.
-La última pieza necesaria es un resultado en teoría de aproximación debido a
-Charles Stein.
-% ----------------------
-% ... STEIN'S METHOD ...
-% ----------------------
-\section{Del método de Stein a la discrepancia de Stein}
+En la sección \ref{sec:advi} introdujimos la idea de hacer inferencia variacional a través de transformaciones suaves. El algoritmo \eqref{algo:advi} le quita restrucciones al problema variacional completando el soporte $\X\subseteq\RR^d$ de la densidad de interés a $\RR^d$ completo y después minimiza $\kl$ con familias de normales, una solución paramétrica. Este proceso utilliza una librería de transformaciones y sus jacobianos que el equipo de desarrollo de la implementación mantiene\cite{advi}, pero en principio no se necesita salir de $\X$. La idea detrás de SVGD es partir de una distribución $Q_0$ sobre $\X$ y construir de manera iterativa y no paramétrica biyección suave $T: \X \to \X$ que minimice $\kl(T_*Q_0\mmid P)$.
 
-% ----------------------
-% ........ SVGD ........
-% ----------------------
-\section{Stein Vartational gradient descent}
-En la sección \ref{sec:advi} introdujimos la idea de hacer inferencia
-variacional a través de transformaciones suaves. El algoritmo \eqref{algo:advi}
-\enquote{estandariza} el problema variacional completando el soporte
-$\mathcal{X}\subseteq{R}^d$ de la densidad de interés a $\mathbb{R}^d$ completo
-y después minimiza $\kl$ con familias de normales, una solución paramétrica.
-Este proceso utilliza una librería de transformaciones y sus jacobianos que el
-equipo de desarrollo de Stan mantiene\cite{advi}, pero en principio no se
-necesita salir de $\mathcal{X}$. La idea detrás de SVGD es partir de una
-distribución $Q_0$ en $\mathcal{X}$ y construir de manera iterativa y no
-paramétrica biyección suave $T: \mathcal{X} \to \mathcal{X}$ que minimice
-$\kl(T_*Q_0\mmid P)$. 
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ............................. EL MÉTODO DE STEIN .............................
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+\section{El método de Stein}
 
-En este capítulo usaremos la notación
-\begin{equation*}
-    q_T = \frac{dT_*Q}{d\lambda}
-\end{equation*}
+El primer ingrediente necesario es un resultado en teoría de probabilidad que Charles Stein publicó en 1972 para dar una cota explícita al teorema central del límite, pero que tiene aplicación en muchos otros contextos de aproximación probabilística \cite{stein-magic-method, formal-stein-method}. En su forma general, el método de Stein involucra dos medidas de probabilidad $P, Q$ en el mismo espacio $\X$; de las cuáles conocemos de forma completa sólo $Q$ y queremos aproximarla con $P$, acotando el error. En inferencia variacional, $P$ es la distribución posterior del modelo y $Q$ queda bajo nuestro control, pero la idea es mucho más general. Algunas aplicaciones de corte más teórico están documentadas en \url{https://sites.google.com/site/steinsmethod/home}. 
+
+\begin{definition}
+    $ \mathcal{H} \subseteq \{h: \X \to \R \textrm{ continua y acotada}\}$ es una \textit{clase (de funciones) separadora} si cuando 
+    \begin{equation*}
+        \E_{x\sim P}[h(x)] = \E_{x\sim Q}[h(x)] \quad \forall h \in \mathcal{H} 
+    \end{equation*}
+    se sigue que $P=Q$.
+\end{definition}
+
+Ignorando por el momento el problema de existencia (que probaremos más adelante), consideremos una clase de funciones separadora $\mathcal{H}$. Para cada $h \in \mathcal{H}$, supongamos que puede encontrarse una solución $f_h$ la \textit{ecuación de Stein}
+
+\begin{equation}\label{eq:stein-equation}
+    h(x) - \E_{x\sim Q}[h(x)] = \A f(x)
+\end{equation}
+
+y sea $\F = \{f_h: h \in \mathcal{H}\}$. Si todo es finito, podemos integrar con respecto a $P$ de ambos lados para obtener
+\begin{equation}\label{eq:integrated-stein-equation}
+    \E_{x\sim P}[h(x)] - \E_{x\sim Q}[h(x)] = \E_{x\sim P}[\A f(x)]
+\end{equation}
+
+Por la ecuación \eqref{eq:integrated-stein-equation} y por ser $\mathcal{H}$ una clase separadora, se sigue que 
+\begin{align*}
+    P = Q &\Leftrightarrow \\
+    &\Leftrightarrow \E_{x\sim P}[h(x)] - \E_{x\sim Q}[h(x)] = 0 \quad \forall h \in \mathcal{H}  \\
+    &\Leftrightarrow \E_{x\sim P}[\A f_h(x)]= 0 \quad \forall h \in \mathcal{H}
+\end{align*}
+
+Así que encontramos condiciones necesarias y suficientes para que $P=Q$ en términos de $\A$ y $\F$. 
+
+\begin{definition}
+    La \textit{caracterización de Stein} de $P$ es
+    \begin{equation*}
+        X\sim P \Leftrightarrow \E_{x\sim P}[\A f(x)]= 0 \quad \forall f \in \F
+    \end{equation*}
+    donde $\A$ recibe el nombre de \textit{operador de Stein para } P y $\F$ {clas de Stein} de $P$.
+\end{definition}
+
+\begin{example}[Aproximación normal]
+    Un ejemplo con aproximación normal para aterrizar ideas.
+\end{example}
+
+\begin{theorem}[Caracterización de Stein para densidades suaves]
+    Supongamos que $P$ tiene una densidad $p$ continuamente diferenciable con soporte $\X \subseteq \RR^d$. El operador de Stein para $P$ está definido por
+    \begin{equation*}
+        A_p f(x) = f(x)\nabla_x\log p(x)' + \nabla_xf(x) 
+    \end{equation*}
+    con clase de Stein
+    \begin{equation*}
+        \{\}
+    \end{equation*}
+\end{theorem}
+
+
+\subsection{Más sobre clases separadoras}
+Necesitamos un par de resultados de teoría de la medida que justifiquen nuestro uso de clases separadoras. Para no generalizar demasiado (pero sí lo suficiente), consideraremos medidas de probabilidad $P, Q$ en un espacio métrico $(\X, \rho)$ junto con sus borelianos $\mathbb{B}(\X, \rho) := \mathcal{S}$. 
 
 \begin{lemma}
-    Sea $X\sim Q$ un vector aleatorio en $\mathcal{X}$ y $T_\epsilon:
-    \mathcal{X} \to \mathcal{X}$ una biyección indexada por $\epsilon$ y
-    diferenciable con respecto a $x$ y $\epsilon$.
-    \begin{equation*}
-        \nabla_\epsilon \kl(T_*Q\mmid P)  = 
-        \mathbb{E}_{x\sim Q}\left[
-            s_p(T(x))'\nabla_\epsilon T(x) + 
-            \mathrm{traza}\left(\nabla_xT(x)\right)^{-1}\cdot
-            \nabla_\epsilon \nabla_x T(x)
-        \right] 
-    \end{equation*}
-    donde $s_p = \nabla\log p$.
+    Toda medida de probabilidad $P$ en $(\X, \mathcal{S})$ es \textit{regular}. Es decir, para cada $A\in \mathcal{S}$ y $\varepsilon > 0$ existen un conjunto cerrado $F$ y un conjunto abierto $G$ tales que $F\subseteq A \subseteq G$ y $P(G\setminus F) < \varepsilon$.
 \end{lemma}
-\begin{proof} $ $ \newline
-    Usando el corolario \ref{cor:invar-invert}, 
-    \begin{align*}
-        \nabla_\epsilon\kl(T_*Q\mmid P) &= \kl(Q \mmid T^{-1}P) \\
-        &:= \nabla_\epsilon\int\log\frac{dQ}{dT^{-1}_*P}dQ \\
-        &= \int\nabla_\epsilon\log\frac{dQ}{dT^{-1}P}dQ
-    \end{align*}
-
+\begin{proof}
+    El teorema 1.1 de \cite{billingsley-convergence}.
 \end{proof}
+
+\begin{corollary}
+    La clase de $\mathcal{E}\subseteq\mathcal{S}$ de conjuntos cerrados es una \textit{clase separadora} (de conjuntos). Es decir, cuando $P|_\mathcal{E} = Q|_\mathcal{E}$ se sigue que $P=Q$.
+\end{corollary}
+
+\begin{theorem}
+    La clase de funciones actodas y uniformemente continuas es una clase separadora.
+\end{theorem}
+
+Suponiendo por ahora la existencia de clases separadoras que probaremos más adelante (\eqref{thm:clases-separadoras}),
+
+
+\begin{theorem}\label{thm:clases-separadoras}
+    Sea $(\X, d)$ un espacio métrico y $P, Q$ medidas de probabilidad en $(\X, \mathbb{B}(\X, d))$.
+\end{theorem}
+
 \end{document}
