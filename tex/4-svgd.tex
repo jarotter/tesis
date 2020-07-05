@@ -2,7 +2,7 @@
 \begin{document}
 
 \chapter{Stein Variational Gradient Descent}
-En la sección \ref{sec:advi} introdujimos la idea de hacer inferencia variacional a través de transformaciones suaves. El algoritmo \eqref{algo:advi} le quita restrucciones al problema variacional completando el soporte $\X\subseteq\RR^d$ de la densidad de interés a $\RR^d$ completo y después minimiza $\kl$ con familias de normales, una solución paramétrica. Este proceso utilliza una librería de transformaciones y sus jacobianos que el equipo de desarrollo de la implementación mantiene\cite{advi}, pero en principio no se necesita salir de $\X$. La idea detrás de SVGD es partir de una distribución $Q_0$ sobre $\X$ y construir de manera iterativa y no paramétrica biyección suave $T: \X \to \X$ que minimice $\kl(T_*Q_0\mmid P)$.
+En la sección \ref{sec:advi} introdujimos la idea de hacer inferencia variacional a través de transformaciones suaves. El algoritmo \eqref{algo:advi} le quita restrucciones al problema variacional completando el soporte $\X\subseteq\RR^d$ de la densidad de interés a $\RR^d$ completo y después minimiza $\kl$ con familias de normales, una solución paramétrica. Este proceso utilliza una librería de transformaciones y sus jacobianos implementadas directamente en alguna librería de bayesiana computacional como Stan\cite{advi}, pero en principio no se necesita salir de $\X$. La idea detrás de SVGD es partir de una distribución $Q_0$ sobre $\X$ y construir de manera iterativa y no paramétrica biyección suave $T: \X \to \X$ que minimice $\kl(T_*Q_0\mmid P)$.
 
 % ------------------------------------------------------------------------------
 % ------------------------------------------------------------------------------
@@ -61,19 +61,20 @@ Aterricemos ideas con un ejemplo antes de continuar las generalidades. El siguie
         \E\left[Zf(Z)\right] = \E\left[f'(Z)\right]
     \end{equation*}
     
-    para toda $f: \RR \to \RR$ absolutamente continua tal que $\E | f' | < \infty$.
-    \begin{proof}
-        Supongamos primero que $f$ tiene soporte compacto contenido en $(a, b)$, con $a, b \in \overline{\RR}$. Integrando por partes con $u=f(z)$ y $dv = ze^{\frac{-z^2}{2}}$,
+    para toda $f: \RR \to \RR$ absolutamente continua tal que $\E \left[| f'(Z) |\right] < \infty$.
+    \begin{proof} 
+        Probaremos primero suficiencia.
+        Supongamos que $f$ tiene soporte compacto contenido en $(a, b)$, con $a, b \in \overline{\RR}$. Integrando por partes con $u=f(z)$ y $dv = -z\phi(z)dz = \phi'(z)dz$,
         \begin{align}\label{eq:stein-parts}
         \begin{split}
-            \E[zf(z)] &= \int_a^b zf(z)e^{\frac{-z^2}{2}}dz \\
-                &= \left[f(z)e^{\frac{-z^2}{2}} \right]_a^b 
-                    + \int_a^b f'(z)e^{\frac{-z^2}{2}}dz
+            \E[Zf(Z)] &= \int_a^b zf(z)\phi(z)dz \\
+                &= \left[f(z)\phi(z) \right]_a^b 
+                    + \int_a^b f'(z)\phi(z)dz
         \end{split}
         \end{align}
-        La hipótesis sobre el dominio hace que el primer término se anule, y el segundo es precisamente $\E[f'(Z)]$. 
+        Donde $\phi$ denota a la densidad normal. Como el soporte entero de $f$ está en $(a, b)$ el primer término se anula. El segundo es precisamente $\E[f'(Z)]$. 
 
-        En general $f$ puede tener a todo $\RR$ de dominio, pero en la prueba la \enquote{recortaremos} para utilizar el resultado de arriba. Formalmente, supongamos ahora que $f$ satisface las hipótesis del teorema, y que además tanto $\E[Zf(Z)]$ como $E[f'(Z)]$ son finitas.
+        En general $f$ puede tener a todo $\RR$ de dominio, pero en la prueba la \enquote{recortaremos} para utilizar el resultado de arriba. Formalmente, supongamos ahora que $f: \RR \to \RR$ es absolutamente continua, y que además tanto $\E[|Zf(Z)|]$ como $\E[|f'(Z)|]$ son finitas.
         Sea $(g_n)_{n\in\N}$ la sucesión de funciones
         \begin{equation*}
             g_n(z) = 
@@ -87,33 +88,80 @@ Aterricemos ideas con un ejemplo antes de continuar las generalidades. El siguie
         \end{equation*}
         \begin{figure}
             \centering
+            \definecolor{blue1}{HTML}{004c6d}
+            \definecolor{blue2}{HTML}{3d708f}
+            \definecolor{blue3}{HTML}{6996b3}
+            \definecolor{blue4}{HTML}{94bed9}
+            \definecolor{blue5}{HTML}{c1e7ff}
             \begin{tikzpicture}[
+                % n=1
                 declare function={
-                func(\x)= (\x<=-2) * (\x*\x + 6*\x + 8)   +
-                and(\x>-2, \x<=1) * (2 - \x - \x*\x)     +
-                and(\x>1,  \x<=2) * (6 - 8*\x + 2*\x*\x) +
-                            (\x>2) * (-10 + 6*\x - \x*\x);
+                func1(\x)= (\x<=-2) * 0   +
+                and(\x>(-2), \x<=-1) * (\x+2)    +
+                and(\x>(-1),  \x<=1) * 1 +
+                and(\x>1*1, \x<=2) * -(\x-2) +
+                (\x>2) * 0;
+                },
+                % n=2
+                declare function={
+                func2(\x)= (\x<=-2*2) * 0   +
+                and(\x>(-2)*2, \x<=-1*2) * (1/2)*(\x+2*2)     +
+                and(\x>(-1)*2,  \x<=1*2) * 1 +
+                and(\x>1*2, \x<=2*2) * (-1/2)*(\x-2*2) +
+                (\x>2*2) * 0;
+                },
+                % n=3
+                declare function={
+                func3(\x)= (\x<=-2*3) * 0   +
+                and(\x>(-2)*3, \x<=-1*3) * (1/3)*(\x+2*3)     +
+                and(\x>(-1)*3,  \x<=1*3) * 1 +
+                and(\x>1*3, \x<=2*3) * (-1/3)*(\x-2*3) +
+                (\x>2*3) * 0;
+                },
+                % n=4
+                declare function={
+                func4(\x)= (\x<=-2*4) * 0   +
+                and(\x>(-2)*4, \x<=-1*4) * (1/4)*(\x+2*4)     +
+                and(\x>(-1)*4,  \x<=1*4) * 1 +
+                and(\x>1*4, \x<=2*4) * (-1/4)*(\x-2*4) +
+                (\x>2*4) * 0;
+                },
+                % n=5
+                declare function={
+                func5(\x)= (\x<=-2*5) * 0   +
+                and(\x>(-2)*5, \x<=-1*5) * (1/5)*(\x+2*5)     +
+                and(\x>(-1)*5,  \x<=1*5) * 1 +
+                and(\x>1*5, \x<=2*5) * (-1/5)*(\x-2*5) +
+                (\x>2*5) * 0;
                 }
             ]
             \begin{axis}[
-                axis x line=middle, axis y line=middle,
-                ymin=-5, ymax=5, ytick={-5,...,5}, ylabel=$y$,
-                xmin=-5, xmax=5, xtick={-5,...,5}, xlabel=$x$,
+                axis x line=bottom, axis y line=middle,
+                ymin=0, ymax=1.5, ytick={0, 1}, ylabel=$f_n(x)$,
+                xmin=-12, xmax=12, xtick={-10, -6, ..., 6, 10}, xlabel=$x$,
             ]
-            \pgfplotsinvokeforeach{-2, 1, 2}{
-                \draw[dashed] ({rel axis cs: 0,0} -| {axis cs: #1, 0}) -- ({rel axis cs: 0,1} -| {axis cs: #1, 0});}
-            \addplot[blue, domain=-5:5, smooth]{func(x)};
+            \addplot[blue1, domain=-2:2, samples=4]{func1(x)};
+            \addlegendentry{n=1};
+            \addplot[blue2, domain=-4:4, samples=5]{func2(x)};
+            \addlegendentry{n=2};
+            \addplot[blue3, domain=-6:6, samples=9]{func3(x)};
+            \addlegendentry{n=3};
+            \addplot[blue4, domain=-8:8, samples=9]{func4(x)};
+            \addlegendentry{n=4};
+            \addplot[blue5, domain=-10:10, samples=9]{func5(x)};
+            \addlegendentry{n=5};
             \end{axis}
             \end{tikzpicture} 
-            \caption{Se supone que son los trapecios}\label{fig:trapecios}
+            \caption{$f_n(x)$ para $n=1, \cdots, 5$. Cuando $n$ crece, $f_n$ vale $1$ en un intervalo más grande centrado en cero.}
+            \label{fig:trapecios}
         \end{figure}
-        Es decir, la familia de funciones en la figura \ref{fig:trapecios} \textcolor{red}{(que claramente no es porque se ve que hacer la figura en tix es todo un tema)}. Construimos una segunda sucesión definiendo
+        Es decir, la familia de funciones en la figura \ref{fig:trapecios}. Construimos una segunda sucesión definiendo
         \begin{equation*}
             f_n(z) = f(z)g_n(z)
         \end{equation*}
         Sin importar $n$, $f_n$ es una función con soporte compacto, por lo que aplica la ecuación \eqref{eq:stein-parts}. Además, se cumple para toda $z$ que
         \begin{equation*}
-            \mid f_n(z) \mid = | f(Z) | \mid g_n(z) \mid \leq | f(Z) |
+            \mid f_n(z) \mid = \mid f(z)\mid \mid g_n(z) \mid \leq | f(z) |
         \end{equation*}
         y que $f_n(x) \rightarrow f(x)$ puntualmente. Más aún, también $f_n'(x) \rightarrow f'(x)$ puntualmente, pues
         \begin{equation*}
@@ -137,29 +185,38 @@ Aterricemos ideas con un ejemplo antes de continuar las generalidades. El siguie
                 0, & \quad z > 2n
             \end{cases}
         \end{equation*}
-        Así que siempre puede encontrarse $n$ suficientemente grande para que $f'(x) = f'_n(x)$.
+        Así que siempre puede encontrarse $n$ suficientemente grande para que $f_n'(x) = f'(x)$.
         
-        Como supusimos integrabilidad de $\mid f \mid$, el teorema de la convergencia dominada asegura que
+        Como supusimos integrabilidad de $\mid Zf(Z) \mid \geq \mid Z f_n(Z)\mid$ el teorema de la convergencia dominada asegura que
         \begin{align}
         \begin{split}
-            \E[Zf(Z)] &= \int_{-\infty}^\infty zf(z)e^{\frac{-z^2}{2}} dz \\
-            &= \lim_{n\rightarrow\infty}\int_{\RR}zf_n(z)e^{\frac{-z^2}{2}} dz \\
+            \E[Zf(Z)] &= \int_{-\infty}^\infty zf(z)\phi(z) dz \\
+            &= \lim_{n\rightarrow\infty}\int_{-\infty}^\infty zf_n(z)\phi(z) dz \\
             &= \lim_{n\rightarrow\infty}\left(
-                    \left[f_n(z)e^{\frac{-z^2}{2}} \right]_{-\infty}^\infty  + \int_{-\infty}^\infty f_n'(z)e^{\frac{-z^2}{2}}dz
+                    \left[f_n(z)\phi(z) \right]^{-\infty}_\infty  + \int_{-\infty}^\infty f_n'(z)\phi(z)dz
                 \right) \\
-            &= \lim_{n\rightarrow\infty}0 + \lim_{n\rightarrow\infty}\int_{-\infty}^\infty f_n'(z)e^{\frac{-z^2}{2}}dz \\
-            &= \int_{-\infty}^\infty f'(z)e^{\frac{-z^2}{2}}dz \\
+            &= \lim_{n\rightarrow\infty}0 + \lim_{n\rightarrow\infty}\int_{-\infty}^\infty f_n'(z)\phi(z)dz \\
+            &= \int_{-\infty}^\infty f'(z)\phi(z)dz \\
             &= \E[f'(Z)]
         \end{split}
         \end{align}
-        Finalmente, basta notar que por los lemas \eqref{lemma:stein-f1} y \eqref{lemma:stein-f2}, no era necesario aumentar hipótesis. Si $\E[f'(Z)] < \infty$, también se tiene que $\E[| f(Z) |], \E[Zf(Z)] < \infty$.
+        En la tercera línea usamos integracion por partes y la identidad $\phi'(z)=-z\phi(z)$. En la cuarta, basta recordar que $f$ es absolutamente, y por lo tanto uniformemente, continua; y que cada $g_n$ también es uniformemente continua con $\delta = \frac{\varepsilon}{|m|})$ y $|m|$ la magnitud de la pendiente en el trapecio $g_n$. De esto se sigue que para cada $n$
+        \begin{enumerate}[label=\roman*.]
+            \item $f_n$ es uniformemente continua
+            \item $\int_{-\infty}^\infty |f_n\phi| \leq \int_{-\infty}^\infty |f\phi| = \E[|f(z)|]< \infty$
+        \end{enumerate}
+        por lo que el primer término se anula. En la quinta usamos convergencia dominada, esta vez usando la integrabilidad de $\mid f'(z)\mid \geq \mid f'_n(z)\mid$. 
 
-        Para probar el converso, supongamos que $W$ es una variable aleatoria que satisface $\E\left[Wf(W)\right] = \E\left[f'(W)\right]$. \textcolor{red}{Probar el converso}.
+
+        
+        Finalmente, basta probar, como hacemos en los lemas \eqref{lemma:stein-f1} y \eqref{lemma:stein-f2}, que no era necesario aumentar hipótesis: Si $\E[|f'(Z)|] < \infty$, también se tiene que $ \E[|Zf(Z)|], \E[|f(Z)|] < \infty$.
+
+        Para probar el converso, sea $W$ una variable aleatoria que satisface $\E\left[Wf(W)\right] = \E\left[f'(W)\right]$. 
     \end{proof}
 \end{theorem}
 
 \begin{lemma}\label{lemma:stein-f1}
-    Si $Z\sim \mathcal{N}(0, 1)$ y $f$ es una función absolutamente continua tal que $\E[|f'(Z)|] < \infty$, entonces $\E[| f(Z) |] < \infty$.
+    Si $Z\sim \mathcal{N}(0, 1)$ y $f$ es una función absolutamente continua tal que $\E[|Zf(Z)|] < \infty$, entonces $\E[| f(Z) |] < \infty$.
     \begin{proof}
         Analicemos casos. Si $z \in [-1, 1]$, 
         \begin{equation*}
@@ -169,7 +226,7 @@ Aterricemos ideas con un ejemplo antes de continuar las generalidades. El siguie
         \begin{equation*}
             |f(z)| \leq |z||f(z)| \leq  \sup_{|x|\leq 1} |f(x)| + |zf(z)|
         \end{equation*}
-        por lo que la cota es válida para toda $z$. De la continuidad de $f$ y el teorema de Weirestrass se sigue que el supremo sea finito.
+        por lo que la cota es válida para toda $z$. De la continuidad de $f$ y el teorema de Weirestrass se sigue que el supremo sea finito, y la finitud se mantiene integrando con respecto a $Z$.
     \end{proof}
 \end{lemma}
 
@@ -178,10 +235,10 @@ Aterricemos ideas con un ejemplo antes de continuar las generalidades. El siguie
     \begin{proof}
         Sea $\phi$ la densisdad normal estándar.
         \begin{align*}
-            \E[|Zf(Z)|] &= \int_{\RR} |zf(z)|\phi(z)dz \\
-            &\leq \int_{\RR}|z|\left(\left|f(z)-f(0)\right|+\left|f(0)\right|\right)\phi(z) dz \\
-            &= \int_0^\infty z|f(z)-f(0)|\phi(z)dz + \int_{-\infty}^0(-z)|f(0)|\phi(z)dz \\
-                &\qquad  + |f(0)|\int_{\RR}\left|z\right|\phi(z)dz
+            \E[|Zf(Z)|] &= \int_{-\infty}^\infty |zf(z)|\phi(z)dz \\
+            &\leq \int_{-\infty}^\infty|z|\left(\left|f(z)-f(0)\right|+\left|f(0)\right|\right)\phi(z) dz \\
+            &= \int_0^\infty z|f(z)-f(0)|\phi(z)dz + \int_{-\infty}^0({-z})|f(z)-f(0)|\phi(z)dz \\
+                &\qquad  + |f(0)|\int_{-\infty}^\infty\left|z\right|\phi(z)dz
         \end{align*}
         Para acotar el tercer sumando, basta recordar que si $X\sim \mathcal{N}(0, 1)$, entonces $\left|X\right| \sim \text{MediaNormal}(0,1)$, que tiene media $\sqrt{\frac{2}{\pi}}$. Aplicando el teorema fundamental del cálculo a $f$ y la desigualdad $\left|\int g\right|\leq \int\left|g\right|$, podemos acotar el resto de la suma con
         \begin{equation}\label{eq:stproof-cota}
@@ -190,17 +247,37 @@ Aterricemos ideas con un ejemplo antes de continuar las generalidades. El siguie
         \end{equation}
         Que gracias al teorema de Fubini, la identidad $\phi'(z) = -z\phi(z)$ y el hecho $\lim_{z\rightarrow \pm\infty}\phi(z) = 0$ puede reescribirse como
         \begin{align*}
-            \eqref{eq:stproof-cota} &= \int_0^\infty \left|f'(t)\right|\int_t^\infty z\phi(z)dzdt
+            \eqref{eq:stproof-cota} &= \int_0^\infty \left|f'(t)\right|\int_{-\infty}^t (-z)\phi(z)dzdt
                 + \int_{-\infty}^0\left|f'(t)\right|\int_{-\infty}^t(-z)\phi(z)dzdt \\
             &= \int_0^\infty \left|f'(t)\right|\phi(t)dt 
                 + \int_{-\infty}^0 \left|f'(t)\right|\phi(t)dt \\
-            &= \E[f'(Z)]
+            &= \E[|f'(Z)|]
         \end{align*}
         que por el lema \eqref{lemma:stein-f1} es finito.
     \end{proof}
 \end{lemma}
 
-Esta caracterización 
+\begin{lemma}\label{lemma:stein-eqdif}
+    Sea $\Phi$ la distribución normal. La única solución acotada $f_x$ a la ecuación diferencial 
+    \begin{equation*}
+        f'(w)-wf(w) = \mathbb{I}_{\{w\leq x\}} - \Phi(x)
+    \end{equation*}
+    es
+    \begin{equation*}
+        f_x(w) = -e^{\frac{w^2}{2}}\int_{-\infty}^w e^{\frac{-t^2}{2}}\left(\Phi(x)-\mathbb{I}_{\{t\leq x\}}\right)
+    \end{equation*}
+    \begin{proof}
+        El método del factor integrante muestra que
+        \begin{equation*}
+            \frac{d}{dw}\left(e^\frac{-w^2}{2}f(w)\right) = e^\frac{-w^2}{2}\left(\mathbb{I}_{\{t\leq x\}}-\Phi(x)\right),
+        \end{equation*}
+        que da como solución general
+        \begin{equation*}
+            f_x(w) = e^\frac{w^2}{2}\int_w^\infty e^\frac{-w^2}{2}\left(\Phi(x)-\mathbb{I}_{\{t\leq x\}}\right)dt
+                + Ce^\frac{w^2}{2}
+        \end{equation*}
+    \end{proof}
+\end{lemma}
 
 Hay una serie de métricas de probabilidad (como la Kolmogorov, la Wasserstein y la de variación total) que pueden expresarse como un supremo tomado en el lado izquierdo de \eqref{eq:integrated-stein-equation} sobre una familia de funciones $\mathcal{G}$ \cite{probability-metrics}
 
